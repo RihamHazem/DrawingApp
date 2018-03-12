@@ -1,0 +1,15 @@
+<div
+  (mousedown)="setMouseToDown($event)"
+  (touchstart)="touchBegin($event)"
+  (mousemove)="handleCanvasClicking($event)"
+  (touchmove)="handleCanvasTouching($event)"
+  (mouseup)="setMouseToUp()"
+  (touchend)="setMouseToUp()"
+  (mouseleave)="setMouseToUp()">
+  <canvas #myCanvas class="draw-16"
+        style="display: block; margin-top: 70px;">Sorry your browser doesn't support canvas</canvas>
+  <div #textInputs></div>
+  <a href="" hidden #downloadImage></a>
+
+  <div #notes></div>
+</div>

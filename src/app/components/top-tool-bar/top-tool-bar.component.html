@@ -1,0 +1,100 @@
+<div *ngIf="hideTopBar" class="burger-button" (click)="toggleAllMenu()">
+  <i class="fa fa-bars custom-burger"></i>
+</div>
+<div class="top-nav">
+  <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-left-tool-bar" >
+    <input value="Unknown Board">
+    <!--<span class="drop-down" (click)="toggleDropDownMenu()"></span>-->
+    <img src="../../assets/images/drop-down.png" class="drop-down" (click)="toggleSettingsMenu()" alt="">
+  </div>
+  <div *ngIf="signedIn && !hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar" (click)="toggleProfileMenu()" >
+    <img src="../../assets/images/user-purple.svg" class="user-photo">
+    <span>Riham</span>
+    <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
+  </div>
+  <div *ngIf="!signedIn && !hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar-s" (click)="showSignInWindow()" >
+    <span>Log In or Sign Up</span>
+  </div>
+</div>
+
+<div class="drop-down-menu" id="settings-menu" *ngIf="showSettingsMenu" #settingsMenu>
+  <ul class="nav-content">
+    <li class="nav-item">
+      <a href="#">Save board</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Duplicate</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Rename</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Delete</a>
+    </li>
+  </ul>
+</div>
+<div class="drop-down-menu right-drop-down-menu" *ngIf="showProfileMenu">
+  <ul class="nav-content">
+    <li class="nav-item">
+      <a routerLink="profile" target="_blank">My Account</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Log out</a>
+    </li>
+  </ul>
+</div>
+<div class="drop-down-menu right-drop-down-menu" *ngIf="showAllMenu">
+  <ul class="nav-content">
+    <li class="nav-item">
+      <a href="#">Save board</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Duplicate</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Rename</a>
+    </li>
+    <hr>
+    <li class="nav-item">
+      <a href="#">Delete</a>
+    </li>
+    <hr *ngIf="signedIn" >
+    <li *ngIf="signedIn" class="nav-item">
+      <a routerLink="profile" target="_blank">My Account</a>
+    </li>
+    <hr>
+    <li *ngIf="signedIn" class="nav-item">
+      <a href="#">Log out</a>
+    </li>
+    <li *ngIf="!signedIn" class="nav-item" (click)="showSignInWindow()">
+      <a href="#">Log In/Sign Up</a>
+    </li>
+  </ul>
+</div>
+<div class="whole-window2" #dropDownWindow (click)="hideAllMenus()" *ngIf="showWholeWindow"></div>
+<div class="whole-window" #logIn (click)="hideSignInWindow()">
+  <div class="sign-up-window">
+    <div class="form-nav">
+      <h1>Log In</h1>
+      <img src="" alt="">
+    </div>
+    <form action="">
+      <input type="email" placeholder="Your mail">
+      <input type="password" placeholder="Enter Password">
+      <div class="form-footer">
+        <a href="">Forget your password?</a>
+        <input type="submit" value="Login">
+      </div>
+      <div class="sign-in">
+        <span>Don't have an account? </span>
+        <a href=""> Create one here!</a>
+      </div>
+    </form>
+  </div>
+</div>

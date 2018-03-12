@@ -1,0 +1,59 @@
+<div class="whole-window" (click)="toggleLeftMenu()" #wholeWindow></div>
+<div class="tools-div" *ngIf="showToolsButton" (click)="toggleLeftMenu()">
+  <span class="tools tools-span">
+    <img src="../../assets/images/tools.svg" alt="">
+  </span>
+</div>
+<div class="tool-bar left-tool-bar" #container [hidden]="!showLeftMenu">
+  <div>
+    <div class="tool-item" #pencilDiv (mouseleave)="hidePencilRangeMenu()">
+      <span class="tools selected" #pencil (mouseenter)="showPencilRangeMenu()">
+        <img src="../../assets/images/edit2.svg" (click)="setPencil()">
+      </span>
+    </div>
+    <div class="tool-item" #eraseDiv (mouseleave)="hideEraserRangeMenu()">
+      <span class="tools" #eraser (mouseenter)="showEraserRangeMenu()">
+        <img src="../../assets/images/eraser2.svg" (click)="setEraser()">
+      </span>
+    </div>
+    <div class="tool-item" #textDiv (mouseleave)="hideTextRangeMenu()">
+      <span class="tools" #text (mouseenter)="showTextRangeMenu()">
+        <img src="../../assets/images/text2.svg"  (click)="setText()">
+      </span>
+    </div>
+    <div class="tool-item">
+      <span class="tools" #note>
+        <img src="../../assets/images/note.svg"  (click)="setNote()">
+      </span>
+    </div>
+    <div class="tool-item">
+      <span class="tools" #undo>
+        <img src="../../assets/images/undo.svg"  (click)="setUndo()">
+      </span>
+    </div>
+    <div class="tool-item">
+      <span class="tools" #camera>
+        <img src="../../assets/images/camera.svg"  (click)="setCamera()">
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="menuContainer" #pencilContainer (mouseenter)="showPencilRangeMenu()"
+     (mouseleave)="hidePencilRangeMenu()">
+  <input type="color" #color1 (change)="updatePencilColor($event)" >
+  <br>
+  <input class="slider" #slider1 type="range" min="1" value="1" max="10" (change)="setRadiusPencil()">
+</div>
+<div class="menuContainer" #eraserContainer (mouseenter)="showEraserRangeMenu()"
+     (mouseleave)="hideEraserRangeMenu()">
+  <input type="color" #color2 value="#ffffff" (change)="updateEraserColor($event)">
+  <br>
+  <input class="slider" #slider2 type="range" value="2" min="1" max="10"  (change)="setRadiusEraser()">
+</div>
+<div class="menuContainer" #textContainer (mouseenter)="showTextRangeMenu()"
+     (mouseleave)="hideTextRangeMenu()">
+  <input type="color" #color3 value="#000000" (change)="updateTextColor($event)">
+  <br>
+  <input class="slider" #slider3 type="range" value="1" min="1" max="10" (change)="setTextSize()">
+</div>

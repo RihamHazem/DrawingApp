@@ -1,0 +1,88 @@
+.profile-photo img {
+  width: 10%;
+}
+.profile-photo {
+  margin: 50px auto;
+  text-align: center;
+}
+div form.user-info-form {
+  border: 1px solid #e2e2e2;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  width: 40%;
+  margin: 0 auto 50px auto;
+}
+.input-group {
+  padding: 20px 10px;
+}
+div form.user-info-form input, div form.user-info-form select {
+  border: 2px solid #e2e2e2;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  display: block;
+  width: 97%;
+  margin: 1.5%;
+}
+div form.user-info-form label {
+  margin: 10px 1.5% 10px 1.5%;
+  font-weight: bold;
+  color: #555;
+  display: inline-block;
+}
+div form.user-info-form div.form-footer {
+  border-top: 1px solid #e2e2e2;
+  padding: 10px 10px 10px 10px;
+  background-color: #eee;
+  display: table;
+  width: 100%;
+}
+div form.user-info-form div.form-footer a {
+  display: inline-block;
+  margin: 15px 10px;
+  text-decoration: none;
+  color: #555;
+}
+div form.user-info-form div.form-footer a:hover {
+  color: #7c4b8e;
+  text-decoration: underline;
+}
+div form.user-info-form div.form-footer input[type="submit"] {
+  width:  150px;
+  display: inline-block;
+  float: right;
+  margin: 0 8px 0 0;
+  background-color: #f097b3;
+  color: #333;
+  font-weight: bold;
+  border-width: 1px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  div form.user-info-form {
+    width: 70%;
+  }
+  .profile-photo img {
+    width: 15%;
+  }
+  .profile-photo {
+    margin: 30px auto;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 596px) {
+  div form.user-info-form div.form-footer input[type="submit"] {
+    width: 100px;
+    font-size: x-small;
+  }
+  div form.user-info-form div.form-footer a, div form.user-info-form input, div form.user-info-form select {
+    font-size: x-small;
+  }
+  div form.user-info-form label {
+    font-size: small;
+  }
+}

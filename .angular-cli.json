@@ -19,7 +19,11 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/font-awesome/css/font-awesome.css"
+      ],
+      "addons": [
+        "../node_modules/font-awesome/fonts/*.+(otf|eot|svg|ttf|woff|woff2)"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
@@ -55,6 +59,9 @@
   },
   "defaults": {
     "styleExt": "css",
-    "component": {}
+    "component": {},
+    "build": {
+      "preserveSymlinks": true
+    }
   }
 }

@@ -1,0 +1,51 @@
+.draw-16 {
+  cursor: url("../../../assets/images/edit-16.png"), pointer;
+}
+.draw-24 {
+  cursor: url("../../../assets/images/edit-24.png"), pointer;
+}
+.draw-32 {
+  cursor: url("../../../assets/images/edit-32.png"), pointer;
+}
+.draw-64 {
+  cursor: url("../../../assets/images/edit-64.png"), pointer;
+}
+.draw-128 {
+  cursor: url("../../../assets/images/edit-128.png"), pointer;
+}
+
+.circle-16 {
+  cursor: url("../../../assets/images/circle-16.png") 8 8, pointer;
+}
+.circle-24 {
+  cursor: url("../../../assets/images/circle-24.png") 12 12, pointer;
+}
+.circle-32 {
+  cursor: url("../../../assets/images/circle-32.png") 16 16, pointer;
+}
+.circle-64 {
+  cursor: url("../../../assets/images/circle-64.png") 32 32, pointer;
+}
+.circle-128 {
+  cursor: url("../../../assets/images/circle-128.png") 64 64, pointer;
+}
+
+.text-cursor {
+  cursor: text;
+}
+
+.note {
+  background-color: rgb(255, 247, 205);
+  box-shadow: rgba(0, 0, 0, 0.3) 4px 4px 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 30px 10px 10px 10px;
+  cursor: grabbing;
+}
+
+.note textarea {
+  border: 0;
+  background-color: inherit;
+  outline: none;
+}

@@ -1,0 +1,228 @@
+
+.tool-bar {
+  background-color: #f097b3;
+  position: fixed;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.top-tool-bar {
+  width: 180px;
+  height: 55px;
+}
+.top-left-tool-bar {
+  left: 80px;
+  top: 10px;
+}
+.top-right-tool-bar {
+  width: 150px;
+  right: 1%;
+  top: 10px;
+  padding-left: 10px;
+}
+.top-right-tool-bar-s {
+  width: 165px;
+  right: 1%;
+  top: 10px;
+  padding-left: 5px;
+}
+
+.top-left-tool-bar:hover, .top-right-tool-bar:hover, .top-right-tool-bar-s:hover {
+  cursor: pointer;
+  background-color: #e590a9;
+}
+
+.top-left-tool-bar input, .top-right-tool-bar span, .top-right-tool-bar-s span {
+  margin-left: 10px;
+  margin-top: 12px;
+  background-color: inherit;
+  padding: 5px;
+  font-size: 1.2em;
+  display: inline-block;
+  border: 1px dashed #f097b3;
+  color: #333333;
+  font-style: italic;
+}
+
+.top-right-tool-bar-s span {
+  font-size: 1.1em;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.top-right-tool-bar span, .top-right-tool-bar-s span { margin-left: 5px; }
+.top-left-tool-bar input { width: 75%; }
+.top-left-tool-bar input:focus {
+  outline: none;
+}
+.top-left-tool-bar input:hover {
+  cursor: text;
+  border: 1px dashed #333333;
+}
+
+
+.drop-down {
+  width: 12px;
+  height: 12px;
+}
+.user-photo {
+  width: 40px;
+  vertical-align: middle;
+}
+.drop-down-menu {
+  position: fixed;
+  top: 75px;
+  width: 150px;
+  background-color: #7c4b8e;
+  border-radius: 10px;
+  animation-name: fadeUp;
+  animation-duration: 0.75s;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.burger-button {
+  background-color: #7c4b8e;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  padding: 7px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  float: right;
+  margin-top: 12px;
+  margin-right: 17px;
+  cursor: pointer;
+}
+
+.burger-button .custom-burger {
+  font-size: 2.5em;
+  color: #f097b3;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+#settings-menu {
+  left: 110px;
+}
+
+.right-drop-down-menu {
+  right: 10px;
+}
+
+ul.nav-content {
+  list-style: none;
+  color: #ffffff;
+  /*padding: 15px 20px;*/
+}
+ul.nav-content li.nav-item a {
+  text-decoration: none;
+  color: #ffffff;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  padding: 18px 20px;
+}
+ul.nav-content li.nav-item a:hover {
+  background-color: #683f77;
+}
+ul.nav-content hr {
+  border: none;
+  height: 1px;
+  background-color: #683f77;
+  color: #683f77;
+}
+
+.whole-window {
+  width: 100%;
+  height: 2000px;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  display: none;
+  top: 0;
+}
+.whole-window2 {
+  width: 100%;
+  height: 2000px;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+}
+
+.sign-up-window {
+  position: fixed;
+  width: 35%;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 50px;
+  top: 10%;
+  left: 30%;
+  z-index: 1;
+}
+.sign-up-window h1 {
+  font-size: xx-large;
+  padding-left: 10px;
+  margin-bottom: 30px;
+}
+.sign-up-window form input[type="email"], .sign-up-window form input[type="password"] {
+  width: 95%;
+  padding: 10px;
+  background-color: #fff;
+  border: 2px solid #e2e2e2;
+  border-radius: 10px;
+  display: block;
+  margin: 20px auto;
+}
+.sign-up-window form .form-footer, .sign-up-window .sign-in {
+  width: 95%;
+  margin: 25px auto 0 auto;
+  display: table;
+}
+.sign-up-window .sign-in {
+  border-top: 1px solid #e2e2e2;
+  margin: 50px auto 0 auto;
+}
+.sign-up-window form .form-footer a {
+  text-decoration: none;
+  color: #7c4b8e;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 30px;
+  float: left;
+}
+.sign-up-window .sign-in a {
+  text-decoration: none;
+  color: #7c4b8e;
+  font-weight: bold;
+  display: inline-block;
+}
+.sign-up-window form .form-footer input[type="submit"] {
+  background-color: #7c4b8e;
+  border: 0;
+  padding: 10px;
+  border-radius: 15px;
+  float: right;
+  color: #ffffff;
+  margin-top: 20px;
+}
+.sign-in span, .sign-in a {
+  float: left;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .sign-up-window {
+    width: 80%;
+    left: 10%;
+    top: 8%;
+    padding: 25px;
+  }
+  .sign-up-window h1 {
+    margin-bottom: 10px;
+  }
+  .sign-in span, .sign-in a {
+    margin-top: 5px;
+    font-size: x-small;
+  }
+}

@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DrawingAreaComponent } from './drawing-area.component';
+import { DrawingAreaComponent } from "./drawing-area.component";
 
-describe('DrawingAreaComponent', () => {
+describe("DrawingAreaComponent", () => {
   let component: DrawingAreaComponent;
   let fixture: ComponentFixture<DrawingAreaComponent>;
 
@@ -19,7 +19,7 @@ describe('DrawingAreaComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

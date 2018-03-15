@@ -1,0 +1,102 @@
+.bg {
+  background-image: url("../../../assets/images/bg.jpeg");
+}
+.sign-up-bg, .log-in-bg {
+  width: 100%;
+  height: 2000px;
+  background-color: rgba(240, 151, 179, 0.6);
+  position: fixed;
+  z-index: 2;
+  top: 0;
+}
+.sign-up-bg {
+  display: none;
+}
+
+.sign-window {
+  position: fixed;
+  width: 35%;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 50px;
+  top: 9%;
+  left: 30%;
+  z-index: 1;
+}
+.sign-in-window {
+  top: 17%;
+}
+.sign-window h1 {
+  font-size: xx-large;
+  padding-left: 10px;
+  margin-bottom: 30px;
+}
+.sign-window form input[type="text"], .sign-window form input[type="email"], .sign-window form input[type="password"], .sign-window form select {
+  width: 95%;
+  padding: 10px;
+  background-color: #fff;
+  border: 2px solid #e2e2e2;
+  border-radius: 10px;
+  display: block;
+  margin: 20px auto;
+  outline: none;
+}
+.sign-window form select option {
+  padding: 20px;
+}
+.sign-window form .form-footer, .sign-window .sign-in, .sign-window .sign-up {
+  width: 95%;
+  margin: 25px auto 0 auto;
+  display: table;
+}
+.sign-window .sign-in {
+  border-top: 1px solid #e2e2e2;
+  margin: 50px auto 0 auto;
+}
+.sign-window .sign-up {
+  border-top: 1px solid #e2e2e2;
+  margin: 30px auto 0 auto;
+}
+.sign-window form .form-footer a {
+  text-decoration: none;
+  color: #7c4b8e;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 30px;
+  float: left;
+}
+.sign-window .sign-in a, .sign-window .sign-up a {
+  text-decoration: none;
+  color: #7c4b8e;
+  font-weight: bold;
+  display: inline-block;
+}
+.sign-window form .form-footer input[type="submit"] {
+  background-color: #7c4b8e;
+  border: 0;
+  padding: 10px;
+  border-radius: 15px;
+  float: right;
+  color: #ffffff;
+  margin-top: 20px;
+}
+.sign-in span, .sign-in a, .sign-up span, .sign-up a {
+  float: left;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .sign-window {
+    width: 80%;
+    left: 10%;
+    top: 8%;
+    padding: 25px;
+  }
+  .sign-window h1 {
+    margin-bottom: 10px;
+  }
+  .sign-in span, .sign-in a, .sign-up span, .sign-up a {
+    margin-top: 5px;
+    font-size: x-small;
+  }
+}

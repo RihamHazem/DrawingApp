@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-saved-boards',
-  templateUrl: './saved-boards.component.html',
-  styleUrls: ['./saved-boards.component.css']
+  selector: "app-saved-boards",
+  templateUrl: "./saved-boards.component.html",
+  styleUrls: ["./saved-boards.component.css"]
 })
 export class SavedBoardsComponent implements OnInit {
 

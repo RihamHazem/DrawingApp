@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { WhiteBoardComponent } from './white-board.component';
+import { WhiteBoardComponent } from "./white-board.component";
 
-describe('WhiteBoardComponent', () => {
+describe("WhiteBoardComponent", () => {
   let component: WhiteBoardComponent;
   let fixture: ComponentFixture<WhiteBoardComponent>;
 
@@ -19,7 +19,7 @@ describe('WhiteBoardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

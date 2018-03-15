@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RightToolBarComponent } from './left-tool-bar.component';
+import { RightToolBarComponent } from "./left-tool-bar.component";
 
-describe('RightToolBarComponent', () => {
+describe("RightToolBarComponent", () => {
   let component: RightToolBarComponent;
   let fixture: ComponentFixture<RightToolBarComponent>;
 
@@ -19,7 +19,7 @@ describe('RightToolBarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -7,13 +7,10 @@
     <!--<span class="drop-down" (click)="toggleDropDownMenu()"></span>-->
     <img src="../../assets/images/drop-down.png" class="drop-down" (click)="toggleSettingsMenu()" alt="">
   </div>
-  <div *ngIf="signedIn && !hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar" (click)="toggleProfileMenu()" >
+  <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar" (click)="toggleProfileMenu()" >
     <img src="../../assets/images/user-purple.svg" class="user-photo">
     <span>{{user.name}}</span>
     <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
-  </div>
-  <div *ngIf="!signedIn && !hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar-s" (click)="showSignInWindow()" >
-    <span>Log In or Sign Up</span>
   </div>
 </div>
 
@@ -64,62 +61,14 @@
     <li class="nav-item">
       <a href="#">Delete</a>
     </li>
-    <hr *ngIf="signedIn" >
-    <li *ngIf="signedIn" class="nav-item">
+    <hr>
+    <li class="nav-item">
       <a routerLink="profile" target="_blank">My Account</a>
     </li>
     <hr>
-    <li *ngIf="signedIn" class="nav-item">
+    <li class="nav-item">
       <a href="#">Log out</a>
-    </li>
-    <li *ngIf="!signedIn" class="nav-item" (click)="showSignInWindow()">
-      <a href="#">Log In/Sign Up</a>
     </li>
   </ul>
 </div>
 <div class="whole-window2" #dropDownWindow (click)="hideAllMenus()" *ngIf="showWholeWindow"></div>
-<div class="whole-window" #logIn (click)="hideSignInWindow($event)">
-  <div class="sign-window">
-    <div class="form-nav">
-      <h1>Log In</h1>
-    </div>
-    <form action="">
-      <input type="email" placeholder="Your mail" [(ngModel)]="user.email" name="email" required>
-      <input type="password" placeholder="Enter Password" [(ngModel)]="user.password" name="password" required>
-      <div class="form-footer">
-        <a href="">Forget your password?</a>
-        <input type="submit" value="Login" (click)="signInUser()"> <br>
-        <p style="color: #f00;" *ngIf="error">{{errorMsg}}</p>
-      </div>
-      <div class="sign-in">
-        <span>Don't have an account? </span>
-        <a (click)="showSignUpWindow()"> Create one here!</a>
-      </div>
-    </form>
-  </div>
-</div>
-<div class="whole-window" #signUp (click)="hideSignUpWindow($event)">
-  <div class="sign-window">
-    <div class="form-nav">
-      <h1>Sign Up</h1>
-    </div>
-    <form action="">
-      <input required [(ngModel)]="user.name" name="name" type="text" placeholder="Your name">
-      <input required [(ngModel)]="user.email" name="email" type="email" placeholder="Your mail">
-      <input required [(ngModel)]="user.password" name="password" type="password" placeholder="Enter Password">
-      <select required (change)="setUserType($event)"  name="type" >
-        <option hidden value="options">Student or Teacher</option>
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-      </select>
-      <div class="form-footer">
-        <a style="color: #f00;" *ngIf="error">{{errorMsg}}</a>
-        <input type="submit" value="Sign Up" (click)="submitUser()">
-      </div>
-      <div class="sign-in">
-        <span>Already have an account? </span>
-        <a (click)="showSignInWindow()"> log in!</a>
-      </div>
-    </form>
-  </div>
-</div>

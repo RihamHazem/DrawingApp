@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-profile-info',
-  templateUrl: './profile-info.component.html',
-  styleUrls: ['./profile-info.component.css']
+  selector: "app-profile-info",
+  templateUrl: "./profile-info.component.html",
+  styleUrls: ["./profile-info.component.css"]
 })
 export class ProfileInfoComponent implements OnInit {
 

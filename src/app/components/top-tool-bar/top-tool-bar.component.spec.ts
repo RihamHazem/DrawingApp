@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TopToolBarComponent } from './top-tool-bar.component';
+import { TopToolBarComponent } from "./top-tool-bar.component";
 
-describe('TopToolBarComponent', () => {
+describe("TopToolBarComponent", () => {
   let component: TopToolBarComponent;
   let fixture: ComponentFixture<TopToolBarComponent>;
 
@@ -19,7 +19,7 @@ describe('TopToolBarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

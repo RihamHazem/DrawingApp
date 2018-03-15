@@ -1,43 +1,43 @@
-import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, HostListener} from "@angular/core";
 import {NavbarAndCanvasCommunicationService} from "../../services/navbar-and-canvas-communication.service";
 
 @Component({
-  selector: 'app-left-tool-bar',
-  templateUrl: './left-tool-bar.component.html',
+  selector: "app-left-tool-bar",
+  templateUrl: "./left-tool-bar.component.html",
   styleUrls: [
-    './left-tool-bar-mobile.component.css',
-    './left-tool-bar-tablet.component.css',
-    './left-tool-bar.component.css'
+    "./left-tool-bar-mobile.component.css",
+    "./left-tool-bar-tablet.component.css",
+    "./left-tool-bar.component.css"
   ]
 })
 export class LeftToolBarComponent implements OnInit {
 
 
-  @ViewChild('eraser') eraser: ElementRef;
-  @ViewChild('pencil') pencil: ElementRef;
-  @ViewChild('text') text: ElementRef;
-  @ViewChild('note') note: ElementRef;
-  @ViewChild('undo') undo: ElementRef;
-  @ViewChild('camera') camera: ElementRef;
+  @ViewChild("eraser") eraser: ElementRef;
+  @ViewChild("pencil") pencil: ElementRef;
+  @ViewChild("text") text: ElementRef;
+  @ViewChild("note") note: ElementRef;
+  @ViewChild("undo") undo: ElementRef;
+  @ViewChild("camera") camera: ElementRef;
 
-  @ViewChild('color1') radColorPencil: ElementRef;
-  @ViewChild('color2') radColorEraser: ElementRef;
-  @ViewChild('color3') radColorText: ElementRef;
+  @ViewChild("color1") radColorPencil: ElementRef;
+  @ViewChild("color2") radColorEraser: ElementRef;
+  @ViewChild("color3") radColorText: ElementRef;
 
-  @ViewChild('pencilDiv') pencilDiv: ElementRef;
-  @ViewChild('eraseDiv') eraserDiv: ElementRef;
-  @ViewChild('textDiv') textDiv: ElementRef;
+  @ViewChild("pencilDiv") pencilDiv: ElementRef;
+  @ViewChild("eraseDiv") eraserDiv: ElementRef;
+  @ViewChild("textDiv") textDiv: ElementRef;
 
-  @ViewChild('slider1') sliderPencil: ElementRef;
-  @ViewChild('slider2') sliderEraser: ElementRef;
-  @ViewChild('slider3') sliderText: ElementRef;
+  @ViewChild("slider1") sliderPencil: ElementRef;
+  @ViewChild("slider2") sliderEraser: ElementRef;
+  @ViewChild("slider3") sliderText: ElementRef;
 
-  @ViewChild('pencilContainer') pencilContainer: ElementRef;
-  @ViewChild('eraserContainer') eraserContainer: ElementRef;
-  @ViewChild('textContainer') textContainer: ElementRef;
+  @ViewChild("pencilContainer") pencilContainer: ElementRef;
+  @ViewChild("eraserContainer") eraserContainer: ElementRef;
+  @ViewChild("textContainer") textContainer: ElementRef;
 
-  @ViewChild('container') container: ElementRef;
-  @ViewChild('wholeWindow') wholeWindow: ElementRef;
+  @ViewChild("container") container: ElementRef;
+  @ViewChild("wholeWindow") wholeWindow: ElementRef;
 
 
   private selectedTool: string;
@@ -47,8 +47,8 @@ export class LeftToolBarComponent implements OnInit {
   private radiusPencil = 2;
   private radiusEraser = 2;
   private textSize = 10;
-  private showLeftMenu: boolean = true;
-  private showToolsButton: boolean = false;
+  private showLeftMenu = true;
+  private showToolsButton = false;
   constructor(private shared: NavbarAndCanvasCommunicationService) {
   }
   ngOnInit() {
@@ -65,16 +65,16 @@ export class LeftToolBarComponent implements OnInit {
     this.shared.colorText.subscribe(col => this.colorText = col);
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   onResize() {
     this.doResponsive();
   }
 
   doResponsive() {
-    if(window.innerWidth <= 768) {
+    if (window.innerWidth <= 768) {
       this.showLeftMenu = false;
       this.showToolsButton = true;
-      this.container.nativeElement.classList.add('left-menu-animation');
+      this.container.nativeElement.classList.add("left-menu-animation");
     } else {
       this.showLeftMenu = true;
       this.showToolsButton = false;
@@ -136,67 +136,66 @@ export class LeftToolBarComponent implements OnInit {
     this.undo.nativeElement.classList.remove("selected");
     this.camera.nativeElement.classList.remove("selected");
     this.note.nativeElement.classList.add("selected");
-  };
+  }
   setUndo() {
     // notify the drawing area
     this.shared.changeTool("undo");
   }
   setCamera() {
     this.shared.changeTool("camera");
-  };
+  }
 
   setRadiusPencil() {
     this.radiusPencil = Number(this.sliderPencil.nativeElement.value);
     this.shared.changeRadiusPencil(this.radiusPencil);
     this.setPencil();
-  };
+  }
   setRadiusEraser() {
     this.radiusEraser = Number(this.sliderEraser.nativeElement.value);
     this.shared.changeRadiusEraser(this.radiusEraser);
     this.setEraser();
-  };
+  }
   setTextSize() {
     this.textSize = Number(this.sliderText.nativeElement.value) * 10;
     console.log("text size", this.textSize);
     this.shared.changeTextSize(this.textSize);
     this.setText();
-  };
+  }
 
   showPencilRangeMenu() {
-    if(this.selectedTool === "pencil") {
+    if (this.selectedTool === "pencil") {
       this.pencilContainer.nativeElement.style.display = "inline-block";
       this.eraserContainer.nativeElement.style.display = "none";
       this.textContainer.nativeElement.style.display = "none";
     }
-  };
+  }
   showEraserRangeMenu() {
-    if(this.selectedTool === "eraser") {
+    if (this.selectedTool === "eraser") {
       this.eraserContainer.nativeElement.style.display = "inline-block";
       this.pencilContainer.nativeElement.style.display = "none";
       this.textContainer.nativeElement.style.display = "none";
     }
-  };
+  }
   showTextRangeMenu() {
-    if(this.selectedTool === "text") {
+    if (this.selectedTool === "text") {
       this.textContainer.nativeElement.style.display = "inline-block";
       this.eraserContainer.nativeElement.style.display = "none";
       this.pencilContainer.nativeElement.style.display = "none";
     }
-  };
+  }
   hidePencilRangeMenu() {
     this.pencilContainer.nativeElement.style.display = "none";
-  };
+  }
   hideEraserRangeMenu() {
     this.eraserContainer.nativeElement.style.display = "none";
-  };
+  }
   hideTextRangeMenu() {
     this.textContainer.nativeElement.style.display = "none";
   }
-  private nextVal: string = "block";
+  private nextVal = "block";
   toggleLeftMenu() {
     this.wholeWindow.nativeElement.style.display = this.nextVal;
-    if(this.nextVal === "block") this.nextVal = "none";
-    else this.nextVal = "block";
+    if (this.nextVal === "block") { this.nextVal = "none"; } else { this.nextVal = "block"; }
     this.showLeftMenu = !this.showLeftMenu;
   }
 

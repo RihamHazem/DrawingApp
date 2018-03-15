@@ -1,3 +1,47 @@
-<p>
-  log-in-sign-up works!
-</p>
+<div class="bg">
+  <div class="log-in-bg" #logIn (click)="hideSignInWindow($event)">
+    <div class="sign-window sign-in-window">
+      <div class="form-nav">
+        <h1>Log In</h1>
+        <p style="color: #f00;padding-left: 10px;" *ngIf="error">{{errorMsg}}</p>
+      </div>
+      <form action="">
+        <input type="email" placeholder="Your mail" [(ngModel)]="user.email" name="email" required>
+        <input type="password" placeholder="Enter Password" [(ngModel)]="user.password" name="password" required>
+        <div class="form-footer">
+          <a href="">Forget your password?</a>
+          <input type="submit" value="Login" (click)="signInUser()"> <br>
+        </div>
+        <div class="sign-in">
+          <span>Don't have an account? </span>
+          <a (click)="showSignUpWindow()"> Create one here!</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="sign-up-bg" #signUp (click)="hideSignUpWindow($event)">
+    <div class="sign-window">
+      <div class="form-nav">
+        <h1>Sign Up</h1>
+      </div>
+      <form action="">
+        <input required [(ngModel)]="user.name" name="name" type="text" placeholder="Your name">
+        <input required [(ngModel)]="user.email" name="email" type="email" placeholder="Your mail">
+        <input required [(ngModel)]="user.password" name="password" type="password" placeholder="Enter Password">
+        <select required (change)="setUserType($event)"  name="type" >
+          <option hidden value="options">Student or Teacher</option>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+        </select>
+        <div class="form-footer">
+          <a style="color: #f00;" *ngIf="error">{{errorMsg}}</a>
+          <input type="submit" value="Sign Up" (click)="submitUser()">
+        </div>
+        <div class="sign-up">
+          <span>Already have an account? </span>
+          <a (click)="showSignInWindow()"> log in!</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

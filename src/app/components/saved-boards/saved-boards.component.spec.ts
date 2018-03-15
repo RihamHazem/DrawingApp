@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SavedBoardsComponent } from './saved-boards.component';
+import { SavedBoardsComponent } from "./saved-boards.component";
 
-describe('SavedBoardsComponent', () => {
+describe("SavedBoardsComponent", () => {
   let component: SavedBoardsComponent;
   let fixture: ComponentFixture<SavedBoardsComponent>;
 
@@ -19,7 +19,7 @@ describe('SavedBoardsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

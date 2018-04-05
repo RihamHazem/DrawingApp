@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild, ElementRef, HostListener} from "@angular/core";
 import {NavbarAndCanvasCommunicationService} from "../../services/navbar-and-canvas-communication.service";
+import {WebSocketService} from "../../services/web-socket.service";
 
 @Component({
   selector: "app-left-tool-bar",
@@ -49,7 +50,9 @@ export class LeftToolBarComponent implements OnInit {
   private textSize = 10;
   private showLeftMenu = true;
   private showToolsButton = false;
-  constructor(private shared: NavbarAndCanvasCommunicationService) {
+  private nextVal = "block";
+  constructor(private shared: NavbarAndCanvasCommunicationService,
+              private ws: WebSocketService) {
   }
   ngOnInit() {
     this.doResponsive();
@@ -58,11 +61,21 @@ export class LeftToolBarComponent implements OnInit {
     this.shared.radiusPencil.subscribe(rad => this.radiusPencil = rad);
     this.shared.radiusEraser.subscribe(rad => this.radiusEraser = rad);
     this.shared.textSize.subscribe(rad => this.textSize = rad);
-    console.log("text size", this.textSize);
 
     this.shared.colorPencil.subscribe(col => this.colorPencil = col);
     this.shared.colorEraser.subscribe(col => this.colorEraser = col);
     this.shared.colorText.subscribe(col => this.colorText = col);
+
+
+    // this.ws.getChangeRadius().subscribe(changes => {
+    //   if (changes["text"]["type"] === "pencil") {
+    //     this.radiusPencil = changes["text"]["radius"];
+    //     this.shared.changeRadiusPencil(changes["text"]["radius"]);
+    //   } else if (changes["text"]["type"] === "eraser") {
+    //     this.radiusEraser = changes["text"]["radius"];
+    //     this.shared.changeRadiusEraser(changes["text"]["radius"]);
+    //   }
+    // });
   }
 
   @HostListener("window:resize", ["$event"])
@@ -147,11 +160,13 @@ export class LeftToolBarComponent implements OnInit {
 
   setRadiusPencil() {
     this.radiusPencil = Number(this.sliderPencil.nativeElement.value);
+    // this.ws.setChangeRadius({type: "pencil", radius: this.radiusPencil});
     this.shared.changeRadiusPencil(this.radiusPencil);
     this.setPencil();
   }
   setRadiusEraser() {
     this.radiusEraser = Number(this.sliderEraser.nativeElement.value);
+    // this.ws.setChangeRadius({type: "eraser", radius: this.radiusEraser});
     this.shared.changeRadiusEraser(this.radiusEraser);
     this.setEraser();
   }
@@ -192,7 +207,6 @@ export class LeftToolBarComponent implements OnInit {
   hideTextRangeMenu() {
     this.textContainer.nativeElement.style.display = "none";
   }
-  private nextVal = "block";
   toggleLeftMenu() {
     this.wholeWindow.nativeElement.style.display = this.nextVal;
     if (this.nextVal === "block") { this.nextVal = "none"; } else { this.nextVal = "block"; }

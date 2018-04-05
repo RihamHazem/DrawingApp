@@ -1,4 +1,6 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
+import {CookieService} from 'ngx-cookie';
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-top-tool-bar",
@@ -13,16 +15,16 @@ export class TopToolBarComponent implements OnInit {
   private hideTopBar = false;
   private showWholeWindow = false;
 
-  private user = {
-    name: "",
-    email: "",
-    password: "",
-    type: ""
-  };
+  private userName: string;
 
   @ViewChild("dropDownWindow") dropDownWindow: ElementRef;
 
-  constructor() { }
+  constructor(private cookieService: CookieService
+              , private router: Router) {
+    if (cookieService.get('userId') !== undefined) {
+      this.userName = cookieService.get('userName');
+    }
+  }
 
   ngOnInit() {
     this.doResponsive();
@@ -54,6 +56,11 @@ export class TopToolBarComponent implements OnInit {
     this.showSettingsMenu = false;
     this.showWholeWindow = false;
   }
-
+  logOut(e) {
+    e.preventDefault();
+    this.cookieService.remove('userId', {domain: 'localhost:4200'});
+    this.cookieService.remove('userName');
+    this.router.navigate([""]);
+  }
 
 }

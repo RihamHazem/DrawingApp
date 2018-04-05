@@ -17,6 +17,14 @@
   color: #f097b3;
 }
 
+.add-room {
+  width: 60px;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
   #nav a {
     font-size: small;

@@ -30,22 +30,11 @@
   cursor: url("../../../assets/images/circle-128.png") 64 64, pointer;
 }
 
+.note-128 {
+  cursor: url("../../../assets/images/file-small.png") 64 64, pointer;
+}
+
 .text-cursor {
   cursor: text;
 }
 
-.note {
-  background-color: rgb(255, 247, 205);
-  box-shadow: rgba(0, 0, 0, 0.3) 4px 4px 10px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  padding: 30px 10px 10px 10px;
-  cursor: grabbing;
-}
-
-.note textarea {
-  border: 0;
-  background-color: inherit;
-  outline: none;
-}

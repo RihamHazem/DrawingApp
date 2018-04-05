@@ -9,7 +9,7 @@
   </div>
   <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar" (click)="toggleProfileMenu()" >
     <img src="../../assets/images/user-purple.svg" class="user-photo">
-    <span>{{user.name}}</span>
+    <span>{{userName}}</span>
     <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
   </div>
 </div>
@@ -67,7 +67,7 @@
     </li>
     <hr>
     <li class="nav-item">
-      <a href="#">Log out</a>
+      <a (click)="logOut($event)">Log out</a>
     </li>
   </ul>
 </div>

@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {GetService} from "../../services/get.service";
 import { Router } from "@angular/router";
+import {CookieService} from 'ngx-cookie';
 
 @Component({
   selector: "app-log-in-sign-up",
@@ -21,7 +22,14 @@ export class LogInSignUpComponent implements OnInit {
   @ViewChild("logIn") logIn: ElementRef;
   @ViewChild("signUp") signUp: ElementRef;
 
-  constructor(private getService: GetService, private router: Router) { }
+  constructor(private getService: GetService
+              , private router: Router
+              , private cookieService: CookieService) {
+    if (cookieService.get('userId') !== undefined) {
+      console.log(cookieService.get('userId'));
+      // router.navigate(['/profile']);
+    }
+  }
 
   ngOnInit() {
   }
@@ -50,15 +58,17 @@ export class LogInSignUpComponent implements OnInit {
     if (!this.user.email.length ||
       !this.user.password.length ||
       !this.user.name.length) {
-      this.errorMsg = "Please fill all fields!";
+      this.errorMsg = "Please fill all fields correctly!";
       this.error = true;
       return;
     }
-    if (this.user.type === "student" || this.user.type === "teacher") {
+    if ((this.user.type === "student" || this.user.type === "teacher") && this.user.email.match("(.*)@(.*)\\.(.*)") != null) {
       this.getService.createNewUser(this.user).subscribe(val => {
         if (val.message === "Successfully added the user.") {
           this.user.id = val["createdUser"]["_id"];
-          this.router.navigate(["/profile", this.user.id]);
+          this.router.navigate(["/profile"]);
+          this.cookieService.put("userId", this.user.id);
+          this.cookieService.put("userName", this.user.name);
         } else {
           this.errorMsg = val.message;
           this.error = true;
@@ -72,8 +82,8 @@ export class LogInSignUpComponent implements OnInit {
   }
   signInUser() {
     if (!this.user.email.length ||
-      !this.user.password.length) {
-      this.errorMsg = "Please fill all fields!";
+      !this.user.password.length || this.user.email.match("(.*)@(.*)\\.(.*)") === null) {
+      this.errorMsg = "Please fill all fields correctly!";
       this.error = true;
       return;
     }
@@ -85,9 +95,12 @@ export class LogInSignUpComponent implements OnInit {
         this.errorMsg = val.message;
         this.error = true;
       } else {
-        this.user.name = val.foundUser.name;
-        this.user.id = val.foundUser._id;
-        this.router.navigate(["/profile", this.user.id]);
+        console.log(val);
+        this.user.name = val["foundUser"].name;
+        this.user.id = val["foundUser"]._id;
+        this.cookieService.put("userId", this.user.id);
+        this.cookieService.put("userName", this.user.name);
+        this.router.navigate(["/profile"]);
       }
     });
   }

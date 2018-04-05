@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import {CookieService} from 'ngx-cookie';
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-white-board",
@@ -7,9 +9,20 @@ import { Component, OnInit } from "@angular/core";
 })
 export class WhiteBoardComponent implements OnInit {
 
-  constructor() { }
+  private userId: string;
+  private boardId: string;
+  constructor(private cookieService: CookieService
+              , private router: Router) { }
 
   ngOnInit() {
+    if (this.cookieService.get('userId') !== undefined) {
+      this.userId = this.cookieService.get('userId');
+    } else {
+      this.router.navigate([""]);
+    }
+    const urlArr = window.location.href.split("/");
+    this.boardId = urlArr.pop();
+    console.log("User id:", this.userId, "Board id:", this.boardId);
   }
 
 }

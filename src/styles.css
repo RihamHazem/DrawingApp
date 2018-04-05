@@ -9,3 +9,41 @@
   -ms-user-select: none;
   box-sizing: border-box;
 }
+
+.note {
+  background-color: rgb(255, 247, 205);
+  box-shadow: rgba(0, 0, 0, 0.3) 4px 4px 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 30px 10px 10px 10px;
+  cursor: grabbing;
+}
+
+.note textarea {
+  border: 0;
+  background-color: inherit;
+  outline: none;
+}
+
+
+#messages li {
+  margin: 3px 10px;
+  padding: 10px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: table;
+  table-layout: fixed;
+  width: auto;
+  word-break: break-all;
+}
+#messages li.me {
+  background: #D9EDF1 ;
+  border-bottom-right-radius: 15px;
+  float:left;clear: both
+}
+#messages li.other {
+  background: #CDCDCD;
+  border-bottom-left-radius: 15px;
+  float:right;clear: both
+}

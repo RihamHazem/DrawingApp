@@ -2,10 +2,17 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
-import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+import { SocketIoModule, SocketIoConfig } from "ng-socket-io";
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
 // ***** Import My Components ***** //
 import { AppComponent } from "./app.component";
 import { LogInSignUpComponent } from "./components/log-in-sign-up/log-in-sign-up.component";
@@ -23,6 +30,9 @@ import { NavbarAndCanvasCommunicationService } from "./services/navbar-and-canva
 import { ChatService } from "./services/chat.service";
 import { WebSocketService } from "./services/web-socket.service";
 import {environment} from "../environments/environment";
+import {CookieService} from 'ngx-cookie-service';
+import {CookieModule} from 'ngx-cookie';
+import { ChatComponent } from './components/chat/chat.component';
 
 const config: SocketIoConfig = { url: environment.ws_url, options: {} };
 @NgModule({
@@ -36,7 +46,8 @@ const config: SocketIoConfig = { url: environment.ws_url, options: {} };
     ProfileInfoComponent,
     SavedBoardsComponent,
     TestComponent,
-    LogInSignUpComponent
+    LogInSignUpComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -44,17 +55,22 @@ const config: SocketIoConfig = { url: environment.ws_url, options: {} };
     HttpClientModule,
     FormsModule,
     SocketIoModule.forRoot(config),
+    CookieModule.forRoot(),
     RouterModule.forRoot([
       {
         path: "",
         component: LogInSignUpComponent
       },
       {
-        path: "drawing",
+        path: "board",
         component: WhiteBoardComponent
       },
       {
-        path: "profile/:id",
+        path: "board/:boardId",
+        component: WhiteBoardComponent
+      },
+      {
+        path: "profile",
         component: UserProfileComponent,
         children: [
           {
@@ -72,12 +88,19 @@ const config: SocketIoConfig = { url: environment.ws_url, options: {} };
         ]
       },
       {
+        path: "chat",
+        component: ChatComponent
+      },
+      {
         path: "**",
         component: LogInSignUpComponent
       }
     ])
   ],
-  providers: [NavbarAndCanvasCommunicationService, GetService, ChatService, WebSocketService],
+  providers: [NavbarAndCanvasCommunicationService
+    , GetService
+    , ChatService
+    , WebSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,17 @@
+<div class="notification" *ngIf="showNotification">{{notificationNum}}</div>
+<div id="container">
+  <div id="chat_title" (click)="collapseChat()">
+    <p>OS Class</p>
+    <button  type="submit" class="hideBtn btn btn-primary btn-sm">
+      <span class="fa fa-minus" aria-hidden="true"></span>
+    </button>
+  </div>
+  <ul id="messages" [hidden]="!showForm" #messages></ul>
+  <form [hidden]="!showForm" (ngSubmit)="onSubmit()">
+    <input id="m" #writtenMessage class="w3-input w3-border w3-round" type="text" autocomplete="off" placeholder="Type a message...">
+    <button type="submit" class="btn btn-primary btn-md">
+      <span class="fa fa-send" aria-hidden="true"></span>
+    </button>
+  </form>
+  <div id="chat_ending"></div>
+</div>

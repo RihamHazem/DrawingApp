@@ -1,5 +1,5 @@
 .tool-bar {
-  background-color: #f097b3;
+  background-color: #707291;
   position: fixed;
   /*box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);*/
   border-radius: 10px;
@@ -8,7 +8,7 @@
   width: 65px;
   top: 75px;
   left: 10px;
-  z-index: 1;
+  z-index: 10;
 }
 
 .menuContainer {
@@ -17,7 +17,7 @@
   padding-top: 20px;
   padding-left: 30px;
   padding-right: 30px;
-  background-color: #f097b3;
+  background-color: #707291;
   border-radius: 15px;
   position: absolute;
   top: 80px;
@@ -94,18 +94,20 @@ span.tools {
   margin-left: 17px;
   margin-top: 2px;
   display: inline-block;
+  position: fixed;
+  z-index: 10;
 }
 
 .tools-div .tools-span {
-  background-color: #f097b3;
+  background-color: #707291;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .selected {
-  background-color: #7c4b8e;
+  background-color: #3a3b4b;
 }
 span.tools:hover {
-  background-color: rgba(0,0,0,0.3);
+  background-color: #575971;
 }
 .tool-bar .tool-item {
   width: 100px;
@@ -127,6 +129,7 @@ span.tools:hover {
   position: fixed;
   display: none;
   top: 0;
+  z-index: 10;
 }
 
 @keyframes fadeLeft {

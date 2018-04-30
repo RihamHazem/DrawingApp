@@ -1,0 +1,72 @@
+
+.container {
+  width: 70%;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.card {
+  width: 22%;
+  background-color: #fff;
+  text-align: center;
+  margin: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.card-body {
+  padding: 20px;
+  height: 200px;
+  -webkit-transition: background-color 0.5s;
+  -moz-transition: background-color 0.5s;
+  -ms-transition: background-color 0.5s;
+  -o-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+  position: relative;
+  overflow: hidden;
+}
+.card-body:hover {
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.5);
+}
+.card-body>img {
+  max-width: 150%;
+  margin-top: 25px;
+  margin-left: -38px;
+}
+.card-body span {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background-color: rgba(0,0,0,0.3);
+  padding: 5px;
+  border-radius: 5px;
+}
+.card-body span:hover {
+  background-color: rgba(0,0,0,0.5);
+}
+.card-body span img {
+  width: 20px;
+}
+.card h3 {
+  padding: 20px;
+  color: #555555;
+}
+.body {
+  overflow-y: auto;
+  height: 569px;
+}
+
+@media screen and (max-width: 1080px) {
+  .card {
+    width: 44%;
+  }
+}
+
+@media screen and (max-width: 769px) {
+  .card {
+    width: 100%;
+  }
+}

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {CookieService} from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ export class WhiteBoardComponent implements OnInit {
               , private router: Router) { }
 
   ngOnInit() {
-    if (this.cookieService.get('userId') !== undefined) {
+    if (this.cookieService.get('userId') !== '') {
       this.userId = this.cookieService.get('userId');
     } else {
       this.router.navigate([""]);
@@ -24,5 +24,8 @@ export class WhiteBoardComponent implements OnInit {
     this.boardId = urlArr.pop();
     console.log("User id:", this.userId, "Board id:", this.boardId);
   }
-
+  onLogged(e) {
+    console.log("log out now!!");
+    this.router.navigate(["/login"]);
+  }
 }

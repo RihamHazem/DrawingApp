@@ -1,6 +1,6 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
-import {CookieService} from 'ngx-cookie';
-import {Router} from '@angular/router';
+import {Component, ElementRef, HostListener, OnInit, Output, ViewChild, EventEmitter} from "@angular/core";
+import { CookieService } from 'ngx-cookie';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: "app-top-tool-bar",
@@ -14,16 +14,20 @@ export class TopToolBarComponent implements OnInit {
   private showAllMenu = false;
   private hideTopBar = false;
   private showWholeWindow = false;
-
+  private boardName: string = "";
   private userName: string;
+  @Output() onLog = new EventEmitter<boolean>();
 
   @ViewChild("dropDownWindow") dropDownWindow: ElementRef;
 
   constructor(private cookieService: CookieService
-              , private router: Router) {
+              , private routeParam: ActivatedRoute) {
     if (cookieService.get('userId') !== undefined) {
-      this.userName = cookieService.get('userName');
+      this.userName = cookieService.get('userName').split(" ")[0];
     }
+    routeParam.params.subscribe(boardInfo => {
+      this.boardName = boardInfo["boardName"];
+    });
   }
 
   ngOnInit() {
@@ -58,9 +62,8 @@ export class TopToolBarComponent implements OnInit {
   }
   logOut(e) {
     e.preventDefault();
-    this.cookieService.remove('userId', {domain: 'localhost:4200'});
-    this.cookieService.remove('userName');
-    this.router.navigate([""]);
+    console.log("I'm tryiing to log out");
+    this.onLog.emit(true);
   }
 
 }

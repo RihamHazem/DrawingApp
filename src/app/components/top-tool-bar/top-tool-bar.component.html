@@ -2,13 +2,12 @@
   <i class="fa fa-bars custom-burger"></i>
 </div>
 <div class="top-nav">
-  <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-left-tool-bar" >
-    <input value="Unknown Board">
-    <!--<span class="drop-down" (click)="toggleDropDownMenu()"></span>-->
-    <img src="../../assets/images/drop-down.png" class="drop-down" (click)="toggleSettingsMenu()" alt="">
+  <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-left-tool-bar" (click)="toggleSettingsMenu()" >
+    <span>{{boardName}}</span>
+    <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
   </div>
   <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar" (click)="toggleProfileMenu()" >
-    <img src="../../assets/images/user-purple.svg" class="user-photo">
+    <img src="../../assets/images/user.svg" class="user-photo">
     <span>{{userName}}</span>
     <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
   </div>
@@ -21,14 +20,6 @@
     </li>
     <hr>
     <li class="nav-item">
-      <a href="#">Duplicate</a>
-    </li>
-    <hr>
-    <li class="nav-item">
-      <a href="#">Rename</a>
-    </li>
-    <hr>
-    <li class="nav-item">
       <a href="#">Delete</a>
     </li>
   </ul>
@@ -36,11 +27,11 @@
 <div class="drop-down-menu right-drop-down-menu" *ngIf="showProfileMenu">
   <ul class="nav-content">
     <li class="nav-item">
-      <a routerLink="profile" target="_blank">My Account</a>
+      <a routerLink="../../../profile" target="_blank">My Account</a>
     </li>
     <hr>
     <li class="nav-item">
-      <a href="#">Log out</a>
+      <a (click)="logOut($event)">Log out</a>
     </li>
   </ul>
 </div>
@@ -48,14 +39,6 @@
   <ul class="nav-content">
     <li class="nav-item">
       <a href="#">Save board</a>
-    </li>
-    <hr>
-    <li class="nav-item">
-      <a href="#">Duplicate</a>
-    </li>
-    <hr>
-    <li class="nav-item">
-      <a href="#">Rename</a>
     </li>
     <hr>
     <li class="nav-item">

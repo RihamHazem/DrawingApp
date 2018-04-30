@@ -1,10 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { NavbarAndCanvasCommunicationService } from "../../services/navbar-and-canvas-communication.service";
 import {WebSocketService} from "../../services/web-socket.service";
-import {CookieService} from 'ngx-cookie-service';
-import {Router} from '@angular/router';
 import {GetService} from '../../services/get.service';
-import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: "app-drawing-area",
@@ -33,8 +30,8 @@ export class DrawingAreaComponent implements OnInit {
   private colorText = "#000000";
   private colorNote = "rgb(255, 247, 205)";
   private paths: any;
+  private otherPaths: any;
   private textSize: any;
-  private addRes = 0;
   private noteTime = false;
   private myNotes = [];
   private holder: any = null;
@@ -54,6 +51,7 @@ export class DrawingAreaComponent implements OnInit {
               , private board: WebSocketService
               , private getService: GetService) {
     this.paths = [[]];
+    this.otherPaths = [[]];
   }
   // ***** Static Functions Begin ***** //
   static getKeyPressed(e) {
@@ -70,13 +68,18 @@ export class DrawingAreaComponent implements OnInit {
     this.doResponsive();
     this.context = this.canvas.nativeElement.getContext("2d");
     this.context.lineWidth = this.pencilInfo.radius * 2;
+
     this.shared.selectedTool.subscribe(tool => this.changeTool(tool));
     this.board.addUser(this.userId, this.boardId);
     this.board.getPoint().subscribe(point => {
       const otherPoint = point["point"];
       if (point["userId"] !== this.userId) { // it's not my turn so I should update drawing
-        this.drawPoint(otherPoint);
-        this.paths[this.paths.length - 1].push({
+        this.drawPoint(otherPoint); // just display it
+        // Save the text in paths
+        if (this.otherPaths == undefined || this.otherPaths.length === 0) {
+          this.otherPaths.push([]);
+        }
+        this.otherPaths[this.otherPaths.length - 1].push({
           type: this.selectedTool,
           x: otherPoint.x,
           y: otherPoint.y,
@@ -85,20 +88,21 @@ export class DrawingAreaComponent implements OnInit {
         });
       }
     });
-    this.board.getMouseState().subscribe((mouseState: boolean) => {
-      this.mouseDown = mouseState;
-      if (this.mouseDown === false) {
-        this.stopDrawing();
+    this.board.getMouseState().subscribe((otherId: string) => {
+      if (this.userId !== otherId) {
+        console.log(this.otherPaths);
+        console.log(this.paths);
+        this.stopDrawingOther();
       }
     });
     this.board.getUndo().subscribe((id) => {
-      if (id !== this.userId) {
-        this.doUndo();
+      if (id !== this.userId) { // the other wants to undo his work
+        this.doUndoOther();
       }
     });
     this.board.getText().subscribe((text) => {
       if (text["userId"] !==  this.userId) {
-        this.putText(text["text"].x, text["text"].y);
+        this.putText(text["text"].x, text["text"].y, false);
       }
     });
     this.board.getTextVal().subscribe((textVal) => {
@@ -142,18 +146,8 @@ export class DrawingAreaComponent implements OnInit {
     });
   }
   doResponsive() {
-    if (window.innerWidth <= 768) {
-      this.canvas.nativeElement.width = window.innerWidth - 10;
-      this.canvas.nativeElement.height = window.innerHeight - 80;
-      this.canvas.nativeElement.style.marginLeft = "5px";
-      this.canvas.nativeElement.style.marginTop = "7px";
-      this.addRes = 79;
-    } else {
-      this.canvas.nativeElement.width = window.innerWidth - 100;
-      this.canvas.nativeElement.height = window.innerHeight - 80;
-      this.canvas.nativeElement.style.marginLeft = "85px";
-      this.addRes = 0;
-    }
+    this.canvas.nativeElement.width = window.innerWidth;
+    this.canvas.nativeElement.height = window.innerHeight;
   }
   changeTool(tool) {
     this.lastSelected = this.selectedTool;
@@ -192,7 +186,7 @@ export class DrawingAreaComponent implements OnInit {
     return null;
   }
   setMouseToDown(e) {
-    this.board.sendMouseState(true);
+    this.mouseDown = true;
     this.holder = this.searchText(e.target);
     if (this.holder != null) {
       return;
@@ -203,6 +197,7 @@ export class DrawingAreaComponent implements OnInit {
         this.beingDraggable(e);
         return;
     }
+    this.deleteEmptyInputs();
     if (this.selectedTool === "pencil") {
       const arr = this.pointForCurrentPencil(e);
       this.pencilInfo.x = arr[0]; this.pencilInfo.y = arr[1];
@@ -216,7 +211,7 @@ export class DrawingAreaComponent implements OnInit {
         if (this.textInputs.length > 0) {
           this.textInputs[this.textInputs.length - 1].blur();
         }
-        this.putText(e.clientX, e.clientY);
+        this.putText(e.clientX, e.clientY, true);
         this.textInputs[this.textInputs.length - 1].focus();
         this.board.sendText({x: e.clientX, y: e.clientY, val: e.value}, this.userId);
       }
@@ -225,72 +220,53 @@ export class DrawingAreaComponent implements OnInit {
         this.putNote(e);
       }
     }
-    // this.mouseDown = true;
-    // this.holder = this.searchNote(e.target);
-    // if (this.holder != null) {
-    //   this.noteTime = true;
-    //   this.beingDraggable(e);
-    // } else {
-    //   if (this.selectedTool === "text") {
-    //     this.holder = this.searchText(e.target);
-    //     if (this.holder === null) {
-    //       if (this.textInputs.length > 0) {
-    //         this.textInputs[this.textInputs.length - 1].blur();
-    //       }
-    //       this.putText(e);
-    //       this.textInputs[this.textInputs.length - 1].focus();
-    //     }
-    //   } else if (this.selectedTool === "pencil" || this.selectedTool === "eraser") {
-    //     this.putPoint(e);
-    //   } else if (this.selectedTool === "note") {
-    //     if (e.target === this.canvas.nativeElement) {
-    //       this.putNote(e);
-    //     }
-    //   }
-    // }
   }
   touchBegin(e) {
-    // e.preventDefault();
-    // this.mouseDown = true;
-    // this.holder = this.searchNote(e.changedTouches["0"].target);
-    // if (this.holder != null) {
-    //   this.noteTime = true;
-    //   this.beingDraggable(e.changedTouches["0"]);
-    // } else {
-    //   if (this.selectedTool === "text") {
-    //     this.holder = this.searchText(e.changedTouches["0"].target);
-    //     if (this.holder === null) {
-    //       if (this.textInputs.length > 0) {
-    //         this.textInputs[this.textInputs.length - 1].blur();
-    //       }
-    //       this.putText(e.changedTouches["0"]);
-    //       this.textInputs[this.textInputs.length - 1].focus();
-    //     } else if (this.selectedTool === "pencil" || this.selectedTool === "eraser") {
-    //       this.putPoint(e.changedTouches["0"]);
-    //     } else if (this.selectedTool === "note") {
-    //       if (e.changedTouches["0"].target === this.canvas.nativeElement) {
-    //         this.putNote(e.changedTouches["0"]);
-    //       }
-    //     }
-    //   }
-    // }
+    e.preventDefault();
+    this.mouseDown = true;
+    this.holder = this.searchText(e.changedTouches["0"].target);
+    if (this.holder != null) {
+      return;
+    }
+    this.holder = this.searchNote(e.changedTouches["0"].target);
+    if (this.holder != null) {
+      this.noteTime = true;
+      this.beingDraggable(e.changedTouches["0"]);
+      return;
+    }
+    this.deleteEmptyInputs();
+    if (this.selectedTool === "pencil") {
+      const arr = this.pointForCurrentPencil(e.changedTouches["0"]);
+      this.pencilInfo.x = arr[0]; this.pencilInfo.y = arr[1];
+      this.sendPoint(this.pencilInfo);
+    } else if (this.selectedTool === "eraser") {
+      const arr = this.pointForCurrentEraser(e.changedTouches["0"]);
+      this.eraserInfo.x = arr[0]; this.eraserInfo.y = arr[1];
+      this.sendPoint(this.eraserInfo);
+    } else if (this.selectedTool === "text") {
+      if (this.holder === null) {
+        if (this.textInputs.length > 0) {
+          this.textInputs[this.textInputs.length - 1].blur();
+        }
+        this.putText(e.changedTouches["0"].clientX, e.changedTouches["0"].clientY, true);
+        this.textInputs[this.textInputs.length - 1].focus();
+        this.board.sendText({x: e.changedTouches["0"].clientX, y: e.changedTouches["0"].clientY, val: e.changedTouches["0"].value}, this.userId);
+      }
+    } else if (this.selectedTool === "note") {
+      if (e.changedTouches["0"].target === this.canvas.nativeElement) {
+        this.putNote(e.changedTouches["0"]);
+      }
+    }
   }
   setMouseToUp() {
     if (this.mouseDown === true) {
-      this.board.sendMouseState(false);
+      this.mouseDown = false;
+      this.board.sendMouseState(this.userId);
       this.stopDrawing();
-    //   if ((this.selectedTool === "text"
-    //     || this.selectedTool === "pencil"
-    //     || this.selectedTool === "eraser")) {
-    //     this.context.beginPath();
-    //     this.paths.push([]);
-    //   }
-    //   this.noteTime = false;
     }
   }
   sendPoint(point: {x: number, y: number, radius: number, color: string}) {
     this.drawPoint(point);
-    this.board.sendPoint(point, this.selectedTool, this.userId);
     this.paths[this.paths.length - 1].push({
       type: this.selectedTool,
       x: point.x,
@@ -298,6 +274,7 @@ export class DrawingAreaComponent implements OnInit {
       radius: point.radius,
       color: point.color
     });
+    this.board.sendPoint(point, this.selectedTool, this.userId);
   }
   drawPoint(point: {x: number, y: number, radius: number, color: string}) {
     this.context.lineTo(point.x, point.y);
@@ -317,8 +294,13 @@ export class DrawingAreaComponent implements OnInit {
       this.paths.push([]);
     }
   }
-  putText(x: number, y: number) {
-    this.deleteEmptyInputs();
+  stopDrawingOther() {
+    this.context.beginPath();
+    if (this.otherPaths[this.otherPaths.length - 1].length > 0) {
+      this.otherPaths.push([]);
+    }
+  }
+  putText(x: number, y: number, me: boolean) {
     this.textInputs.push(document.createElement("textarea"));
     this.textInputs[this.textInputs.length - 1].addEventListener("keydown", (e) => {
       console.log(e);
@@ -329,29 +311,38 @@ export class DrawingAreaComponent implements OnInit {
         }
       }
     });
-
-    // Save the text in paths
-    if (this.paths.length === 0) {
-      this.paths.push([]);
+    if (me) {
+      // Save the text in paths
+      if (this.paths == undefined || this.paths.length === 0) {
+        this.paths.push([]);
+      }
+      this.paths[this.paths.length - 1].push({
+        type: "text",
+        color: this.colorText,
+        size: this.textSize
+      });
+    } else {
+      // Save the text in paths
+      if (this.otherPaths == undefined || this.otherPaths.length === 0) {
+        this.otherPaths.push([]);
+      }
+      this.otherPaths[this.otherPaths.length - 1].push({
+        type: "text",
+        color: this.colorText,
+        size: this.textSize
+      });
     }
-    this.paths[this.paths.length - 1].push({
-      type: "text",
-      color: this.colorText,
-      size: this.textSize
-    });
-
     this.textInputs[this.textInputs.length - 1].style.display = "inline";
     this.textInputs[this.textInputs.length - 1].style.position = "absolute";
     this.textInputs[this.textInputs.length - 1].style.left = String(x) + "px";
     this.textInputs[this.textInputs.length - 1].style.top = String(y - 8) + "px";
     this.textInputs[this.textInputs.length - 1].style.border = "0px";
-
     this.textInputs[this.textInputs.length - 1].style.outline = "none";
     this.textInputs[this.textInputs.length - 1].style.backgroundColor = "rgba(0,0,0,0)";
     this.textInputs[this.textInputs.length - 1].style.color = this.colorText;
     this.textInputs[this.textInputs.length - 1].style.fontSize = String(this.textSize) + "px";
-    this.textInputs[this.textInputs.length - 1].setAttribute("id", "text_" + String(this.textInputs.length - 1));
 
+    this.textInputs[this.textInputs.length - 1].setAttribute("id", "text_" + String(this.textInputs.length - 1));
     this.textInputs[this.textInputs.length - 1].setAttribute("placeholder", "Type here");
 
     this.textContainer.nativeElement.appendChild(this.textInputs[this.textInputs.length - 1]);
@@ -377,23 +368,12 @@ export class DrawingAreaComponent implements OnInit {
     this.noteContainer.nativeElement.appendChild(div);
   }
   pointForCurrentPencil(e) {
-    const val = this.pencilInfo.radius / 2;
     let res: number[];
-    if (val <= 2) {
-      res = [e.clientX - 85 + this.addRes, e.clientY - 55];
-    } else if (val <= 4) {
-      res = [e.clientX - 85 + this.addRes, e.clientY - 49];
-    } else if (val <= 6) {
-      res = [e.clientX - 85 + this.addRes, e.clientY - 42];
-    } else if (val <= 8) {
-      res = [e.clientX - 80 + this.addRes, e.clientY - 12];
-    } else {
-      res = [e.clientX - 80 + this.addRes, e.clientY - 10];
-    }
+    res = [e.clientX, e.clientY + 15];
     return res;
   }
   pointForCurrentEraser(e) {
-    return [e.clientX - 85 + this.addRes, e.clientY - 70];
+    return [e.clientX, e.clientY];
   }
   handleCanvasClicking(e) {
     if (this.noteTime) {
@@ -407,8 +387,8 @@ export class DrawingAreaComponent implements OnInit {
     e.preventDefault();
     if (this.noteTime) {
       this.beginDragging(e.changedTouches["0"]);
-    } else {
-      this.putPoint(e.changedTouches["0"]);
+    } else if (this.mouseDown) {
+      this.setMouseToDown(e.changedTouches["0"]);
     }
   }
   putPoint(e) {
@@ -607,14 +587,57 @@ export class DrawingAreaComponent implements OnInit {
     this.paths.pop();
     this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     for (let i = 0; i < this.paths.length; i++) {
-      console.log(this.paths[i][0]);
       this.context.lineWidth = this.paths[i][0].radius * 2;
       for (let j = 0; j < this.paths[i].length; j++) {
         this.drawPoint(this.paths[i][j]);
       }
       this.context.beginPath();
     }
+    for (let i = 0; i < this.otherPaths.length; i++) {
+      if  (this.otherPaths[i].length === 0 || this.otherPaths[i][0] === undefined) break;
+      this.context.lineWidth = this.otherPaths[i][0].radius * 2;
+      for (let j = 0; j < this.otherPaths[i].length; j++) {
+        this.drawPoint(this.otherPaths[i][j]);
+      }
+      this.context.beginPath();
+    }
     this.paths.push([]);
+  }
+  doUndoOther() {
+    if (this.otherPaths === undefined || !this.otherPaths.length) { return; }
+    while (this.otherPaths.length > 1 && !this.otherPaths[this.otherPaths.length - 1].length) { this.otherPaths.pop(); }
+
+    if (this.otherPaths === undefined || !this.otherPaths.length ||
+      this.otherPaths[this.otherPaths.length - 1].length === 0) { return; }
+
+    if (this.otherPaths[this.otherPaths.length - 1][0].type === "text") {
+      this.otherPaths.pop();
+      if (!this.textInputs || !this.textInputs.length) { return; }
+      this.textContainer.nativeElement.removeChild(this.textInputs.pop());
+      this.otherPaths.push([]);
+      return;
+    }
+
+    this.otherPaths.pop();
+    this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    for (let i = 0; i < this.otherPaths.length; i++) {
+      this.context.lineWidth = this.otherPaths[i][0].radius * 2;
+      for (let j = 0; j < this.otherPaths[i].length; j++) {
+        this.drawPoint(this.otherPaths[i][j]);
+      }
+      this.context.beginPath();
+    }
+    for (let i = 0; i < this.paths.length; i++) {
+      if  (this.paths[i].length === 0 || this.paths[i][0] === undefined) break;
+      this.context.lineWidth = this.paths[i][0].radius * 2;
+      for (let j = 0; j < this.paths[i].length; j++) {
+        this.drawPoint(this.paths[i][j]);
+      }
+      this.context.beginPath();
+    }
+    this.otherPaths.push([]);
+    console.log(this.otherPaths);
+    console.log(this.paths);
   }
   doCamera() {
     this.removeEraserImage();

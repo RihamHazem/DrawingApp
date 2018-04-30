@@ -46,8 +46,8 @@ export class WebSocketService {
       .emit("point", {point: point, type: type, userId: userId});
   }
 
-  sendMouseState(isDown: boolean) {
-    this.socket.emit("mouseState", isDown);
+  sendMouseState(userId: string) {
+    this.socket.emit("mouseState", userId);
   }
   setChangeRadius(callSetRadius: {type: string, radius: number}, userId) {
     this.socket

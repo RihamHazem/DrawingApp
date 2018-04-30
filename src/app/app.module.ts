@@ -13,6 +13,7 @@ import {
   Validators,
   FormBuilder
 } from '@angular/forms';
+import { ParticlesModule } from 'angular-particle';
 // ***** Import My Components ***** //
 import { AppComponent } from "./app.component";
 import { LogInSignUpComponent } from "./components/log-in-sign-up/log-in-sign-up.component";
@@ -54,11 +55,30 @@ const config: SocketIoConfig = { url: environment.ws_url, options: {} };
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ParticlesModule,
     SocketIoModule.forRoot(config),
     CookieModule.forRoot(),
     RouterModule.forRoot([
       {
         path: "",
+        component: UserProfileComponent,
+        children: [
+          {
+            path: "",
+            component: ProfileInfoComponent
+          },
+          {
+            path: "account-details",
+            component: ProfileInfoComponent
+          },
+          {
+            path: "saved-boards",
+            component: SavedBoardsComponent
+          }
+        ]
+      },
+      {
+        path: "login",
         component: LogInSignUpComponent
       },
       {
@@ -66,7 +86,7 @@ const config: SocketIoConfig = { url: environment.ws_url, options: {} };
         component: WhiteBoardComponent
       },
       {
-        path: "board/:boardId",
+        path: "board/:boardName/:boardId",
         component: WhiteBoardComponent
       },
       {
@@ -100,7 +120,8 @@ const config: SocketIoConfig = { url: environment.ws_url, options: {} };
   providers: [NavbarAndCanvasCommunicationService
     , GetService
     , ChatService
-    , WebSocketService],
+    , WebSocketService
+    , CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

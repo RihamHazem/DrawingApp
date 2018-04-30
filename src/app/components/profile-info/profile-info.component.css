@@ -1,16 +1,16 @@
 .profile-photo img {
-  width: 10%;
+  width: 8%;
 }
 .profile-photo {
-  margin: 50px auto;
+  margin: 20px auto;
   text-align: center;
 }
 div form.user-info-form {
   border: 1px solid #e2e2e2;
   background-color: #f9f9f9;
   border-radius: 10px;
-  width: 40%;
-  margin: 0 auto 50px auto;
+  width: 30%;
+  margin: 0 auto 0px auto;
 }
 .input-group {
   padding: 20px 10px;

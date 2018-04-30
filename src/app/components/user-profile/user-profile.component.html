@@ -1,9 +1,35 @@
 <div id="nav">
   <a routerLink="account-details" #accountDetails  (click)="addSelectedAccountDetails()">Account Info</a>
-  <a routerLink="saved-boards" #savedBoards (click)="addSelectedSavedBoards()">Saved Boards</a>
+  <a routerLink="saved-boards" #savedBoards (click)="addSelectedSavedBoards()" >Saved Boards</a>
+  <div class="active" #activePos></div>
 </div>
 <router-outlet></router-outlet>
-<img src="../../assets/images/plus-purple.svg"
+<span title="Add new board">
+  <img src="../../assets/images/plus-purple.svg"
      alt="create new room"
      class="add-room"
-     (click)="createNewRoom()">
+     (click)="togglePopUpVisibility()">
+</span>
+<span class="sign-out-span" title="Add new board">
+  <img src="../../assets/images/sign-out.svg"
+     alt="create new room"
+     class="sign-out"
+     (click)="logOut()">
+</span>
+
+<div class="whole-window" [hidden]="hidePopUp" (click)="togglePopUpVisibility()"></div>
+<div class="pop-up" [hidden]="hidePopUp">
+  <h2>New board in a project
+    <span (click)="togglePopUpVisibility()">×</span>
+  </h2>
+
+  <div class="pop-up-body">
+    <p>This board will be shared with everybody who has the link</p>
+    <form action="">
+      <label>Choose board name:</label><br>
+      <span *ngIf="errorMsg" style="color: red">Please type a valid name for the board</span> <br>
+      <input type="text" [(ngModel)]="boardName" name="borad-name" placeholder="Board Name" required><br>
+      <input type="submit" value="Create Board" (click)="createNewRoom()">
+    </form>
+  </div>
+</div>

@@ -65,17 +65,6 @@ export class LeftToolBarComponent implements OnInit {
     this.shared.colorPencil.subscribe(col => this.colorPencil = col);
     this.shared.colorEraser.subscribe(col => this.colorEraser = col);
     this.shared.colorText.subscribe(col => this.colorText = col);
-
-
-    // this.ws.getChangeRadius().subscribe(changes => {
-    //   if (changes["text"]["type"] === "pencil") {
-    //     this.radiusPencil = changes["text"]["radius"];
-    //     this.shared.changeRadiusPencil(changes["text"]["radius"]);
-    //   } else if (changes["text"]["type"] === "eraser") {
-    //     this.radiusEraser = changes["text"]["radius"];
-    //     this.shared.changeRadiusEraser(changes["text"]["radius"]);
-    //   }
-    // });
   }
 
   @HostListener("window:resize", ["$event"])
@@ -116,7 +105,6 @@ export class LeftToolBarComponent implements OnInit {
     this.pencil.nativeElement.classList.add("selected");
     this.colorPencil = this.radColorPencil.nativeElement.value;
     this.showPencilRangeMenu();
-
   }
   setEraser() {
     this.shared.changeTool("eraser");

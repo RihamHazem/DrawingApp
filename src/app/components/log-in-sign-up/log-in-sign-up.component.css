@@ -13,7 +13,7 @@
   background-color: #fff;
   border-radius: 20px;
   padding: 50px;
-  top: 9%;
+  top: 7%;
   left: 30%;
   z-index: 2;
 }
@@ -25,7 +25,10 @@
   padding-left: 10px;
   margin-bottom: 30px;
 }
-.sign-window form input[type="text"], .sign-window form input[type="email"], .sign-window form input[type="password"], .sign-window form select {
+.sign-window form input[type="text"],
+.sign-window form input[type="email"],
+.sign-window form input[type="password"],
+.sign-window form select {
   width: 95%;
   padding: 10px;
   background-color: #fff;
@@ -34,6 +37,13 @@
   display: block;
   margin: 20px auto;
   outline: none;
+}
+.sign-window form input[type="file"] {
+  width: 95%;
+  padding: 10px;
+  background-color: #fff;
+  display: block;
+  margin: 20px auto 0 auto;
 }
 .sign-window form select option {
   padding: 20px;

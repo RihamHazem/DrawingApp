@@ -10,13 +10,18 @@ import {Router} from '@angular/router';
 export class WhiteBoardComponent implements OnInit {
 
   private userId: string;
+  private userName: string;
+  private showTools: boolean;
   private boardId: string;
   constructor(private cookieService: CookieService
-              , private router: Router) { }
+            , private router: Router) { }
 
   ngOnInit() {
     if (this.cookieService.get('userId') !== '') {
       this.userId = this.cookieService.get('userId');
+      this.userName = this.cookieService.get('userName');
+      this.showTools = this.cookieService.get('userType') !== 'student';
+      console.log("Show Tools: " + this.showTools);
     } else {
       this.router.navigate([""]);
     }

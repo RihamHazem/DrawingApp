@@ -1,6 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit, Output, ViewChild, EventEmitter} from "@angular/core";
 import { CookieService } from 'ngx-cookie';
 import {ActivatedRoute} from '@angular/router';
+import {NavbarAndCanvasCommunicationService} from "../../services/navbar-and-canvas-communication.service";
 
 @Component({
   selector: "app-top-tool-bar",
@@ -16,14 +17,17 @@ export class TopToolBarComponent implements OnInit {
   private showWholeWindow = false;
   private boardName: string = "";
   private userName: string;
+  private userImage: string;
   @Output() onLog = new EventEmitter<boolean>();
 
   @ViewChild("dropDownWindow") dropDownWindow: ElementRef;
 
   constructor(private cookieService: CookieService
-              , private routeParam: ActivatedRoute) {
+              , private routeParam: ActivatedRoute
+              , private shared: NavbarAndCanvasCommunicationService) {
     if (cookieService.get('userId') !== undefined) {
       this.userName = cookieService.get('userName').split(" ")[0];
+      this.userImage = cookieService.get('userImage');
     }
     routeParam.params.subscribe(boardInfo => {
       this.boardName = boardInfo["boardName"];
@@ -62,8 +66,12 @@ export class TopToolBarComponent implements OnInit {
   }
   logOut(e) {
     e.preventDefault();
-    console.log("I'm tryiing to log out");
+    console.log("I'm trying to log out");
     this.onLog.emit(true);
+  }
+
+  saveBoard() {
+    this.shared.doSaveBoard(this.boardName);
   }
 
 }

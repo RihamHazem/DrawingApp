@@ -7,7 +7,7 @@
     <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
   </div>
   <div *ngIf="!hideTopBar" class="tool-bar top-tool-bar top-right-tool-bar" (click)="toggleProfileMenu()" >
-    <img src="../../assets/images/user.svg" class="user-photo">
+    <img src="http://192.168.1.2:3000/public/usersPhoto/{{userImage}}" class="user-photo">
     <span>{{userName}}</span>
     <img src="../../assets/images/drop-down.png" class="drop-down" alt="">
   </div>
@@ -16,7 +16,7 @@
 <div class="drop-down-menu" id="settings-menu" *ngIf="showSettingsMenu" #settingsMenu>
   <ul class="nav-content">
     <li class="nav-item">
-      <a href="#">Save board</a>
+      <a (click)="saveBoard()">Save board</a>
     </li>
     <hr>
     <li class="nav-item">
@@ -38,7 +38,7 @@
 <div class="drop-down-menu right-drop-down-menu" *ngIf="showAllMenu">
   <ul class="nav-content">
     <li class="nav-item">
-      <a href="#">Save board</a>
+      <a (click)="saveBoard()">Save board</a>
     </li>
     <hr>
     <li class="nav-item">
@@ -46,7 +46,7 @@
     </li>
     <hr>
     <li class="nav-item">
-      <a routerLink="profile" target="_blank">My Account</a>
+      <a routerLink="../../../profile" target="_blank">My Account</a>
     </li>
     <hr>
     <li class="nav-item">

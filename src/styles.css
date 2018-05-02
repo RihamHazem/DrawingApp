@@ -52,3 +52,11 @@ body {
   float:right;clear: both
 }
 
+
+.chat-user {
+  color: gray;
+  font-weight: bold;
+  font-style: italic;
+}
+
+

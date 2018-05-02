@@ -23,7 +23,7 @@ export class DrawingAreaComponent implements OnInit {
     radius: 2,
     x: 0,
     y: 0,
-    color: "#ffffff"
+    color: "#f2f2f2"
   };
   private textInputs = [];
   private context: any;
@@ -39,13 +39,17 @@ export class DrawingAreaComponent implements OnInit {
     x: 0,
     y: 0
   };
+  private otherUserName: string = "";
   @Input() userId: string;
+  @Input() userName: string;
   @Input('boardId') boardId: string;
+  @Input() student: boolean;
 
   @ViewChild("myCanvas") canvas: ElementRef;
   @ViewChild("textInputs") textContainer: ElementRef;
   @ViewChild("notes") noteContainer: ElementRef;
   @ViewChild("downloadImage") downloadImage: ElementRef;
+  @ViewChild("otherUser") otherUser: ElementRef;
 
   constructor(private shared: NavbarAndCanvasCommunicationService
               , private board: WebSocketService
@@ -74,10 +78,12 @@ export class DrawingAreaComponent implements OnInit {
     this.board.getPoint().subscribe(point => {
       const otherPoint = point["point"];
       if (point["userId"] !== this.userId) { // it's not my turn so I should update drawing
-        this.drawPoint(otherPoint); // just display it
         // Save the text in paths
         if (this.otherPaths == undefined || this.otherPaths.length === 0) {
           this.otherPaths.push([]);
+        }
+        if (this.paths == undefined || this.paths.length === 0) {
+          this.paths.push([]);
         }
         this.otherPaths[this.otherPaths.length - 1].push({
           type: this.selectedTool,
@@ -86,13 +92,69 @@ export class DrawingAreaComponent implements OnInit {
           radius: otherPoint.radius,
           color: otherPoint.color
         });
+
+        this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        for (let i = 0; i < this.paths.length; i++) {
+          if  (this.paths[i].length === 0 || this.paths[i][0] === undefined) break;
+          this.context.lineWidth = this.paths[i][0].radius * 2;
+          for (let j = 0; j < this.paths[i].length; j++) {
+            this.drawPoint(this.paths[i][j]);
+          }
+          this.context.beginPath();
+        }
+        for (let i = 0; i < this.otherPaths.length; i++) {
+          if  (this.otherPaths[i].length === 0 || this.otherPaths[i][0] === undefined) break;
+          this.context.lineWidth = this.otherPaths[i][0].radius * 2;
+          for (let j = 0; j < this.otherPaths[i].length; j++) {
+            this.drawPoint(this.otherPaths[i][j]);
+          }
+          this.context.beginPath();
+        }
+        this.otherUser.nativeElement.style.top = otherPoint.y + "px";
+        this.otherUser.nativeElement.style.left = otherPoint.x + "px";
+        this.otherUserName = point["userName"];
+        // this.context.closePath();
+      } else {
+        if (this.otherPaths == undefined || this.otherPaths.length === 0) {
+          this.otherPaths.push([]);
+        }
+        if (this.paths == undefined || this.paths.length === 0) {
+          this.paths.push([]);
+        }
+        this.paths[this.paths.length - 1].push({
+          type: this.selectedTool,
+          x: otherPoint.x,
+          y: otherPoint.y,
+          radius: otherPoint.radius,
+          color: otherPoint.color
+        });
+
+        this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        for (let i = 0; i < this.paths.length; i++) {
+          if  (this.paths[i].length === 0 || this.paths[i][0] === undefined) break;
+          this.context.lineWidth = this.paths[i][0].radius * 2;
+          for (let j = 0; j < this.paths[i].length; j++) {
+            this.drawPoint(this.paths[i][j]);
+          }
+          this.context.beginPath();
+        }
+        for (let i = 0; i < this.otherPaths.length; i++) {
+          if  (this.otherPaths[i].length === 0 || this.otherPaths[i][0] === undefined) break;
+          this.context.lineWidth = this.otherPaths[i][0].radius * 2;
+          for (let j = 0; j < this.otherPaths[i].length; j++) {
+            this.drawPoint(this.otherPaths[i][j]);
+          }
+          this.context.beginPath();
+        }
       }
     });
     this.board.getMouseState().subscribe((otherId: string) => {
       if (this.userId !== otherId) {
-        console.log(this.otherPaths);
-        console.log(this.paths);
         this.stopDrawingOther();
+        this.otherUserName = "";
+      } else {
+        this.stopDrawing();
+        this.mouseDown = false;
       }
     });
     this.board.getUndo().subscribe((id) => {
@@ -144,12 +206,21 @@ export class DrawingAreaComponent implements OnInit {
     this.shared.colorText.subscribe(col => {
       this.colorText = col;
     });
+    this.shared.saveBoard.subscribe((boardName: string) => {
+      console.log("Hey I'm here" + boardName);
+      if (boardName.length === 0) return;
+      this.saveImage(boardName);
+    });
+    this.shared.imagePath.subscribe((ip: string) => {
+      this.loadImage(ip);
+    });
   }
   doResponsive() {
     this.canvas.nativeElement.width = window.innerWidth;
     this.canvas.nativeElement.height = window.innerHeight;
   }
   changeTool(tool) {
+    if (this.student) return;
     this.lastSelected = this.selectedTool;
     this.selectedTool = tool;
     if (this.selectedTool === "pencil") {
@@ -186,6 +257,7 @@ export class DrawingAreaComponent implements OnInit {
     return null;
   }
   setMouseToDown(e) {
+    if (this.student) return;
     this.mouseDown = true;
     this.holder = this.searchText(e.target);
     if (this.holder != null) {
@@ -222,6 +294,7 @@ export class DrawingAreaComponent implements OnInit {
     }
   }
   touchBegin(e) {
+    if (this.student) return;
     e.preventDefault();
     this.mouseDown = true;
     this.holder = this.searchText(e.changedTouches["0"].target);
@@ -259,22 +332,14 @@ export class DrawingAreaComponent implements OnInit {
     }
   }
   setMouseToUp() {
+    if (this.student) return;
     if (this.mouseDown === true) {
       this.mouseDown = false;
       this.board.sendMouseState(this.userId);
-      this.stopDrawing();
     }
   }
   sendPoint(point: {x: number, y: number, radius: number, color: string}) {
-    this.drawPoint(point);
-    this.paths[this.paths.length - 1].push({
-      type: this.selectedTool,
-      x: point.x,
-      y: point.y,
-      radius: point.radius,
-      color: point.color
-    });
-    this.board.sendPoint(point, this.selectedTool, this.userId);
+    this.board.sendPoint(point, this.selectedTool, this.userId, this.userName);
   }
   drawPoint(point: {x: number, y: number, radius: number, color: string}) {
     this.context.lineTo(point.x, point.y);
@@ -289,13 +354,13 @@ export class DrawingAreaComponent implements OnInit {
     this.context.moveTo(point.x, point.y);
   }
   stopDrawing() {
-    this.context.beginPath();
+    // this.context.beginPath();
     if (this.paths[this.paths.length - 1].length > 0) {
       this.paths.push([]);
     }
   }
   stopDrawingOther() {
-    this.context.beginPath();
+    // this.context.beginPath();
     if (this.otherPaths[this.otherPaths.length - 1].length > 0) {
       this.otherPaths.push([]);
     }
@@ -391,42 +456,6 @@ export class DrawingAreaComponent implements OnInit {
       this.setMouseToDown(e.changedTouches["0"]);
     }
   }
-  putPoint(e) {
-    if (this.mouseDown) {
-      if (this.paths.length === 0) {
-        this.paths.push([]);
-      }
-      if (this.selectedTool === "pencil") {
-        const arr = this.pointForCurrentPencil(e);
-        this.pencilInfo.x = arr[0];
-        this.pencilInfo.y = arr[1];
-        // Draw the point on the screen
-        // this.drawPoint(this.pencilInfo.x, this.pencilInfo.y, this.pencilInfo.radius, this.pencilInfo.color);
-        // Save the path of the drawing
-        this.paths[this.paths.length - 1].push(
-          {
-            type: "pencil",
-            radius: this.pencilInfo.radius,
-            x: this.pencilInfo.x,
-            y: this.pencilInfo.y,
-            color: this.pencilInfo.color
-          }
-        );
-        // this.board.sendPoint(this.pencilInfo, this.userId);
-      } else if (this.selectedTool === "eraser") {
-        const arr = this.pointForCurrentEraser(e);
-        this.eraserInfo.x = arr[0];
-        this.eraserInfo.y = arr[1];
-        // Draw the point on the screen
-        // this.drawPoint(this.eraserInfo.x, this.eraserInfo.y, this.eraserInfo.radius, this.eraserInfo.color);
-        // Save the path of the eraser
-        this.paths[this.paths.length - 1].push(this.eraserInfo);
-        // this.board.sendPoint(this.eraserInfo, this.userId);
-      }
-    }
-  }
-
-
   deleteEmptyInputs() {
     if (!this.textInputs || !this.textInputs.length) { return; }
     if (!this.textInputs[this.textInputs.length - 1].value) {
@@ -646,6 +675,28 @@ export class DrawingAreaComponent implements OnInit {
     this.downloadImage.nativeElement.href = this.canvas.nativeElement.toDataURL();
     this.downloadImage.nativeElement.download = "true";
     this.downloadImage.nativeElement.click();
+  }
+
+  saveImage(boardName) {
+    let savedImage = this.canvas.nativeElement.toDataURL();
+    // TODO Save board to backend
+    this.getService.saveNewRoom(this.boardId, savedImage).subscribe(val => {
+      console.log(val + ".." + boardName);
+    });
+  }
+
+  loadImage(imageP) {
+    //Loading of the home test image - img1
+    let img = new Image();
+
+    img.setAttribute('crossOrigin', 'anonymous'); // works for me
+    //drawing of the test image - img1
+    img.onload = () => {
+      //draw background image
+      this.context.drawImage(img, 0, 0);
+    };
+
+    img.src = 'http://localhost:3000/public/savedBoards/' + imageP;
   }
 
 

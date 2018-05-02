@@ -6,10 +6,10 @@
   (mouseup)="setMouseToUp()"
   (touchend)="setMouseToUp()"
   (mouseleave)="setMouseToUp()">
-  <canvas #myCanvas class="draw-16"
+  <canvas #myCanvas [class]="student? '': 'draw-16'"
         style="display: block;position: absolute;top: 0;left: 0;">Sorry your browser doesn't support canvas</canvas>
   <div #textInputs></div>
   <a href="" hidden #downloadImage></a>
-
+  <span class="other-user" #otherUser>{{otherUserName}}</span>
   <div #notes></div>
 </div>

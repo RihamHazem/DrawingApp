@@ -33,6 +33,7 @@
           <option value="student">Student</option>
           <option value="teacher">Teacher</option>
         </select>
+        <input type="file" (change)="handleFileUpload($event.target.files)">
         <div class="form-footer">
           <a style="color: #f00;" *ngIf="error">{{errorMsg}}</a>
           <input type="submit" value="Sign Up" (click)="submitUser()">

@@ -1,13 +1,13 @@
 <div class="body">
   <div class="container">
-    <div class="card" *ngFor="let image of images; let i = index">
+    <div class="card" *ngFor="let image of images; let i = index" (click)="navigateToBoard(i)">
       <div class="card-body">
         <span (click)="deleteBoard(i)">
           <img src="../../assets/images/bin.svg" alt="">
         </span>
-        <img src="../../assets/images/{{image}}" alt="your drawing">
+        <img src="http://localhost:3000/public/savedBoards/{{image}}" alt="your drawing">
       </div>
-      <h3>My First Board</h3>
+      <h3>{{boardNames[i]}}</h3>
     </div>
   </div>
 </div>

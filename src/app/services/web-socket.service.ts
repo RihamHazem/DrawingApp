@@ -41,9 +41,9 @@ export class WebSocketService {
       .fromEvent("textVal");
   }
 ///////////////////////////////////////////////////////////////////////
-  sendPoint(point: { radius: number, x: number, y: number, color: string }, type, userId: string) {
+  sendPoint(point: { radius: number, x: number, y: number, color: string }, type, userId: string, userName: string) {
     this.socket
-      .emit("point", {point: point, type: type, userId: userId});
+      .emit("point", {point: point, type: type, userId: userId, userName: userName});
   }
 
   sendMouseState(userId: string) {
@@ -57,9 +57,9 @@ export class WebSocketService {
     this.socket
       .emit("addUser", {room: room, id: userId});
   }
-  sendChatMessage(msg: string, userId: string) {
+  sendChatMessage(msg: string, userId: string, userName: string) {
     this.socket
-      .emit("chatMessage", {msg: msg, userId: userId});
+      .emit("chatMessage", {msg: msg, userId: userId, userName: userName});
   }
   sendUndo(userId) {
     this.socket

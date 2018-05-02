@@ -38,3 +38,8 @@
   cursor: text;
 }
 
+.other-user {
+  background-color: #000;
+  color: #ffffff;
+  position: absolute;
+}

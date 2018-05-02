@@ -17,14 +17,17 @@ export class LogInSignUpComponent implements OnInit {
     name: "",
     email: "",
     password: "",
+    photo: "",
     type: ""
   };
   myStyle: object = {};
   myParams: object = {};
   width: number = 100;
   height: number = 100;
+  private fileToUpload: File = null;
   @ViewChild("logIn") logIn: ElementRef;
   @ViewChild("signUp") signUp: ElementRef;
+  private base64textString: string;
 
   constructor(private getService: GetService
     , private router: Router
@@ -187,15 +190,20 @@ export class LogInSignUpComponent implements OnInit {
       this.error = true;
       return;
     }
-    if ((this.user.type === "student" || this.user.type === "teacher") && this.user.email.match("(.*)@(.*)\\.(.*)") != null) {
+    if ( (this.user.type === "student" || this.user.type === "teacher")
+      && this.user.email.match("(.*)@(.*)\\.(.*)") != null
+      && this.user.photo != null) {
+
       this.getService.createNewUser(this.user).subscribe(val => {
         if (val.message === "Successfully added the user.") {
           this.user.id = val["createdUser"]["_id"];
-          this.router.navigate(["/profile"]);
+          this.user.photo = val["imageName"];
           this.cookieService.set("userId", this.user.id);
           this.cookieService.set("userName", this.user.name);
           this.cookieService.set("userEmail", this.user.email);
           this.cookieService.set("userType", this.user.type);
+          this.cookieService.set("userImage", this.user.photo);
+          this.router.navigate(["/profile"]);
         } else {
           this.errorMsg = val.message;
           this.error = true;
@@ -210,7 +218,8 @@ export class LogInSignUpComponent implements OnInit {
 
   signInUser() {
     if (!this.user.email.length ||
-      !this.user.password.length || this.user.email.match("(.*)@(.*)\\.(.*)") === null) {
+      !this.user.password.length ||
+      this.user.email.match("(.*)@(.*)\\.(.*)") === null) {
       this.errorMsg = "Please fill all fields correctly!";
       this.error = true;
       return;
@@ -228,10 +237,13 @@ export class LogInSignUpComponent implements OnInit {
         this.user.id = val["foundUser"]["_id"];
         this.user.email = val["foundUser"]["email"];
         this.user.type = val["foundUser"]["type"];
+        this.user.photo = val["foundUser"]["photoPath"];
+
         this.cookieService.set("userId", this.user.id);
         this.cookieService.set("userName", this.user.name);
         this.cookieService.set("userEmail", this.user.email);
         this.cookieService.set("userType", this.user.type);
+        this.cookieService.set("userImage", this.user.photo);
         this.router.navigate(["/profile"]);
       }
     });
@@ -239,5 +251,19 @@ export class LogInSignUpComponent implements OnInit {
 
   setUserType(e) {
     this.user.type = e.target.value;
+  }
+  handleFileUpload(file: FileList) {
+    this.fileToUpload = file.item(0);
+    this.getBase64(this.fileToUpload);
+  }
+  getBase64(file) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.user.photo = reader.result;
+    };
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
   }
 }

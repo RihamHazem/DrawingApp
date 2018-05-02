@@ -10,6 +10,7 @@ export class ChatComponent implements OnInit {
   @ViewChild("writtenMessage") writtenMessage: ElementRef;
   @ViewChild("messages") messages: ElementRef;
   @Input() userId: string;
+  @Input() userName: string;
   @Input('boardId') boardId: string;
 
   private showForm = true;
@@ -22,10 +23,11 @@ export class ChatComponent implements OnInit {
     this.chat.getChatMessage().subscribe((msg) => {
       if (msg["msg"].length > 0) {
         const li: any = document.createElement("li");
-        li.innerHTML = msg["msg"];
         if (msg["userId"] === this.userId) {
+          li.innerHTML = msg["msg"];
           li.classList.add("me");
         } else {
+          li.innerHTML = "<i class='chat-user'>" + msg["userName"] + ": </i>" + msg["msg"];
           li.classList.add("other");
           if (this.showForm === false) {
             this.notificationNum++;
@@ -41,7 +43,7 @@ export class ChatComponent implements OnInit {
     if (this.writtenMessage.nativeElement.value === 0) {
       return;
     }
-    this.chat.sendChatMessage(this.writtenMessage.nativeElement.value, this.userId);
+    this.chat.sendChatMessage(this.writtenMessage.nativeElement.value, this.userId, this.userName);
     this.writtenMessage.nativeElement.value = '';
   }
   collapseChat() {

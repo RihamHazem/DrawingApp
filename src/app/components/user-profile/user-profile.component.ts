@@ -61,7 +61,7 @@ export class UserProfileComponent implements OnInit {
       this.errorMsg = true;
       return;
     }
-    this.getService.createNewRoom(this.userId).subscribe(val => {
+    this.getService.createNewRoom(this.userId, this.boardName).subscribe(val => {
       console.log(val + ".." + this.boardName);
       this.router.navigate(["/board", this.boardName, val["id"]]);
     });

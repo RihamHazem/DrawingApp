@@ -3,6 +3,7 @@ import {GetService} from "../../services/get.service";
 import {CookieService} from "ngx-cookie";
 import {Router} from "@angular/router";
 import {NavbarAndCanvasCommunicationService} from "../../services/navbar-and-canvas-communication.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-saved-boards",
@@ -13,6 +14,7 @@ export class SavedBoardsComponent implements OnInit {
   private images = [];
   private boardNames = [];
   private boardIds = [];
+  private hostName = environment.BackEnd_url;
   @Input() userId: string;
   constructor(private getService: GetService
             , private cookieService: CookieService
@@ -29,7 +31,6 @@ export class SavedBoardsComponent implements OnInit {
   loadBoards() {
     this.getService.getUserSavedBoards(this.userId).subscribe(val => {
       for (let valKey in val) {
-        console.log(val[valKey]);
         if (val[valKey]["imagePath"].length === 0) continue;
         this.images.push(val[valKey]["imagePath"]);
         this.boardNames.push(val[valKey]["boardName"]);
@@ -39,9 +40,13 @@ export class SavedBoardsComponent implements OnInit {
   }
 
   deleteBoard(index) {
-    this.images.splice(index, 1);
-    console.log(this.images);
     // TODO: You have to delete the image from database also
+    this.getService.deleteRoom(this.boardIds[index]).subscribe(val => {
+      console.log(val);
+      this.images.splice(index, 1);
+      this.boardNames.splice(index, 1);
+      this.boardIds.splice(index, 1);
+    });
   }
 
   navigateToBoard(i) {

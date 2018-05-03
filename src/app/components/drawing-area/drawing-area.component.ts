@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { NavbarAndCanvasCommunicationService } from "../../services/navbar-and-canvas-communication.service";
 import {WebSocketService} from "../../services/web-socket.service";
 import {GetService} from '../../services/get.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-drawing-area",
@@ -40,6 +41,7 @@ export class DrawingAreaComponent implements OnInit {
     y: 0
   };
   private otherUserName: string = "";
+  private hostName: string = "";
   @Input() userId: string;
   @Input() userName: string;
   @Input('boardId') boardId: string;
@@ -54,6 +56,7 @@ export class DrawingAreaComponent implements OnInit {
   constructor(private shared: NavbarAndCanvasCommunicationService
               , private board: WebSocketService
               , private getService: GetService) {
+    this.hostName = environment.BackEnd_url;
     this.paths = [[]];
     this.otherPaths = [[]];
   }
@@ -686,6 +689,8 @@ export class DrawingAreaComponent implements OnInit {
   }
 
   loadImage(imageP) {
+    if (imageP.length === 0) return;
+    console.log("Load Image");
     //Loading of the home test image - img1
     let img = new Image();
 
@@ -696,7 +701,7 @@ export class DrawingAreaComponent implements OnInit {
       this.context.drawImage(img, 0, 0);
     };
 
-    img.src = 'http://localhost:3000/public/savedBoards/' + imageP;
+    img.src = this.hostName + '/public/savedBoards/' + imageP;
   }
 
 

@@ -2,15 +2,19 @@ import { HttpClient } from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import "rxjs/add/operator/map";
 import {Observable} from "rxjs/Observable";
+import {environment} from "../../environments/environment";
 
 @Injectable()
 export class GetService {
-  private hostName = "192.168.43.219";
-  private signUpUrl = "http://" + this.hostName + ":3000/signUp";
-  private logInUrl = "http://" + this.hostName +":3000/logIn";
-  private boardUrl = "http://" + this.hostName + ":3000/board";
-  private saveBoardUrl = "http://" + this.hostName + ":3000/saveBoard";
-  private getUserSaveBoardsUrl = "http://" + this.hostName + ":3000/getUserSaveBoards";
+  private hostName = environment.BackEnd_url;
+  private signUpUrl = this.hostName + "/signUp";
+  private logInUrl = this.hostName +"/logIn";
+  private boardUrl = this.hostName + "/board";
+  private saveBoardUrl = this.hostName + "/saveBoard";
+  private deleteBoardUrl = this.hostName + "/deleteBoard";
+  private isBoardExitsUrl = this.hostName + "/isBoardExists";
+  private getUserSaveBoardsUrl = this.hostName + "/getUserSaveBoards";
+
   constructor(private httpClient: HttpClient) { }
 
   createNewUser(user: {name: string, email: string, password: string, photo: string, type: string}): Observable<any> {
@@ -27,7 +31,12 @@ export class GetService {
   saveNewRoom(boardId, imagePath) {
     return this.httpClient.patch(this.saveBoardUrl, {boardId: boardId, image: imagePath});
   }
-
+  deleteRoom(boardId) {
+    return this.httpClient.post(this.deleteBoardUrl, {boardId: boardId});
+  }
+  isBoardExists(boardId) {
+    return this.httpClient.post(this.isBoardExitsUrl, {boardId: boardId});
+  }
   getUserSavedBoards(userId) {
     return this.httpClient.post(this.getUserSaveBoardsUrl, {userId: userId});
   }

@@ -26,8 +26,6 @@ export class UserProfileComponent implements OnInit {
     this.currentTab = urlArr.pop();
     if (this.currentTab === "saved-boards") {
       this.addSelectedSavedBoards();
-    } else if (this.currentTab === "account-details") {
-      this.addSelectedAccountDetails();
     } else {
       this.addSelectedAccountDetails();
     }
@@ -44,6 +42,7 @@ export class UserProfileComponent implements OnInit {
     }
     this.savedBoards.nativeElement.classList.remove("selected");
     this.activePos.nativeElement.style.right =  String(window.innerWidth/2 + 5) + "px";
+    this.router.navigate(["/account-details"]);
   }
   addSelectedSavedBoards() {
     if (!this.savedBoards.nativeElement.classList.contains("selected")) {
@@ -54,6 +53,7 @@ export class UserProfileComponent implements OnInit {
       this.activePos.nativeElement.style.right =  String(window.innerWidth/2 - 142) + "px";
     else
       this.activePos.nativeElement.style.right = String(window.innerWidth/2 - 105) + "px";
+    this.router.navigate(["/saved-boards"]);
   }
 
   createNewRoom() {

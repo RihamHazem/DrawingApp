@@ -2,6 +2,7 @@ import {Component, ElementRef, HostListener, OnInit, Output, ViewChild, EventEmi
 import { CookieService } from 'ngx-cookie';
 import {ActivatedRoute} from '@angular/router';
 import {NavbarAndCanvasCommunicationService} from "../../services/navbar-and-canvas-communication.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-top-tool-bar",
@@ -18,6 +19,7 @@ export class TopToolBarComponent implements OnInit {
   private boardName: string = "";
   private userName: string;
   private userImage: string;
+  private hostName: string;
   @Output() onLog = new EventEmitter<boolean>();
 
   @ViewChild("dropDownWindow") dropDownWindow: ElementRef;
@@ -32,6 +34,7 @@ export class TopToolBarComponent implements OnInit {
     routeParam.params.subscribe(boardInfo => {
       this.boardName = boardInfo["boardName"];
     });
+    this.hostName = environment.BackEnd_url;
   }
 
   ngOnInit() {

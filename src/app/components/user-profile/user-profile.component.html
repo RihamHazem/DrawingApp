@@ -1,6 +1,6 @@
 <div id="nav">
-  <a routerLink="account-details" #accountDetails  (click)="addSelectedAccountDetails()">Account Info</a>
-  <a routerLink="saved-boards" #savedBoards (click)="addSelectedSavedBoards()" >Saved Boards</a>
+  <a #accountDetails  (click)="addSelectedAccountDetails()">Account Info</a>
+  <a #savedBoards (click)="addSelectedSavedBoards()" >Saved Boards</a>
   <div class="active" #activePos></div>
 </div>
 <router-outlet></router-outlet>

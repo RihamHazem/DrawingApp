@@ -6,12 +6,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { SocketIoModule, SocketIoConfig } from "ng-socket-io";
 import {
-  ReactiveFormsModule,
   FormsModule,
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder
 } from '@angular/forms';
 import { ParticlesModule } from 'angular-particle';
 // ***** Import My Components ***** //
@@ -35,7 +30,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {CookieModule} from 'ngx-cookie';
 import { ChatComponent } from './components/chat/chat.component';
 
-const config: SocketIoConfig = { url: environment.ws_url, options: {} };
+const config: SocketIoConfig = { url: environment.BackEnd_url, options: {} };
 @NgModule({
   declarations: [
     AppComponent,

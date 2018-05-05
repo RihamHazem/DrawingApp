@@ -40,6 +40,10 @@ export class WebSocketService {
     return this.socket
       .fromEvent("textVal");
   }
+  getGame() {
+    return this.socket
+      .fromEvent("game");
+  }
 ///////////////////////////////////////////////////////////////////////
   sendPoint(point: { radius: number, x: number, y: number, color: string }, type, userId: string, userName: string) {
     this.socket
@@ -72,5 +76,9 @@ export class WebSocketService {
   sendTextVal(textId, val, userId) {
     this.socket
       .emit("textVal", {id: textId, val: val, userId: userId});
+  }
+  sendGame(userName, i, j) {
+    this.socket
+      .emit("game", {userName: userName, i: i, j: j});
   }
 }

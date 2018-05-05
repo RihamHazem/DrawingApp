@@ -12,6 +12,7 @@ export class ChatComponent implements OnInit {
   @Input() userId: string;
   @Input() userName: string;
   @Input('boardId') boardId: string;
+  @Input('boardName') boardName: string;
 
   private showForm = true;
   private notificationNum = 0;

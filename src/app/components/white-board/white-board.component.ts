@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import { CookieService } from 'ngx-cookie-service';
 import {Router} from '@angular/router';
 import {GetService} from "../../services/get.service";
+import {DrawingAreaComponent} from "../drawing-area/drawing-area.component";
 
 @Component({
   selector: "app-white-board",
@@ -14,9 +15,12 @@ export class WhiteBoardComponent implements OnInit {
   private userName: string;
   private showTools: boolean;
   private boardId: string;
+  private boardName: string;
+  private imagePath: string = "";
   constructor(private cookieService: CookieService
             , private router: Router
             , private getService: GetService) { }
+  @ViewChild(DrawingAreaComponent) drawComponent;
 
   ngOnInit() {
     if (this.cookieService.get('userId') !== '') {
@@ -29,11 +33,15 @@ export class WhiteBoardComponent implements OnInit {
     }
     const urlArr = window.location.href.split("/");
     this.boardId = urlArr.pop();
+    this.boardName = urlArr.pop();
+    /** Find from database if board exists **/
     this.getService.isBoardExists(this.boardId).subscribe(val => {
-      console.log("Exits:");
-      console.log(val);
+      console.log("Exits:", val);
       if (val["msg"] === "Not Exists") {
         this.router.navigate(["/profile"]);
+      } else {
+        this.imagePath = val["imagePath"];
+        this.drawComponent.loadImageFirst(this.imagePath);
       }
     });
     console.log("User id:", this.userId, "Board id:", this.boardId);

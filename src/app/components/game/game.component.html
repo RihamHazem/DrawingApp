@@ -1,0 +1,24 @@
+<div [hidden]="beginGame">
+  <form action="">
+    <input type="radio" name="x" [(ngModel)]="isChecked" value="x"> X
+    <input type="radio" name="y" value="y"  [(ngModel)]="isChecked" > Y
+    <input type="submit" (click)="assignTurn()">
+  </form>
+</div>
+
+<div id="game" *ngIf="beginGame && winner.length === 0">
+  <div id="grid">
+    <div id="canvas1" class="grid-element" (click)="play(0,0)"><img [src]="URL1" style="height:110px"></div>
+    <div id="canvas2" class="grid-element" (click)="play(0,1)"><img [src]="URL2" style="height:110px"></div>
+    <div id="canvas3" class="grid-element" (click)="play(0,2)"><img [src]="URL3" style="height:110px"></div><br/><div class="clr"></div>
+    <div id="canvas4" class="grid-element" (click)="play(1,0)"><img [src]="URL4" style="height:110px"></div>
+    <div id="canvas5" class="grid-element" (click)="play(1,1)"><img [src]="URL5" style="height:110px"></div>
+    <div id="canvas6" class="grid-element" (click)="play(1,2)"><img [src]="URL6" style="height:110px"></div><br/><div class="clr"></div>
+    <div id="canvas7" class="grid-element" (click)="play(2,0)"><img [src]="URL7" style="height:110px"></div>
+    <div id="canvas8" class="grid-element" (click)="play(2,1)"><img [src]="URL8" style="height:110px"></div>
+    <div id="canvas9" class="grid-element"(click)="play(2,2)"><img [src]="URL9" style="height:110px"></div><br/><div class="clr"></div>
+  </div>
+</div>
+<br>
+<h1 *ngIf="winner.length !== 0">{{winner}}</h1>
+<br>

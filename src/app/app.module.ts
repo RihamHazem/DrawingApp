@@ -29,6 +29,7 @@ import {environment} from "../environments/environment";
 import {CookieService} from 'ngx-cookie-service';
 import {CookieModule} from 'ngx-cookie';
 import { ChatComponent } from './components/chat/chat.component';
+import { GameComponent } from './components/game/game.component';
 
 const config: SocketIoConfig = { url: environment.BackEnd_url, options: {} };
 @NgModule({
@@ -43,7 +44,8 @@ const config: SocketIoConfig = { url: environment.BackEnd_url, options: {} };
     SavedBoardsComponent,
     TestComponent,
     LogInSignUpComponent,
-    ChatComponent
+    ChatComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +107,10 @@ const config: SocketIoConfig = { url: environment.BackEnd_url, options: {} };
       {
         path: "chat",
         component: ChatComponent
+      },
+      {
+        path: "game",
+        component: GameComponent
       },
       {
         path: "**",

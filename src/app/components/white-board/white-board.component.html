@@ -1,4 +1,10 @@
 <app-top-tool-bar  (onLog)="onLogged($event)"></app-top-tool-bar>
 <app-left-tool-bar *ngIf="showTools"></app-left-tool-bar>
-<app-drawing-area [userId]="userId" [boardId]="boardId" [userName]="userName" [student]="!showTools"></app-drawing-area>
-<app-chat [userId]="userId" [boardId]="boardId" [userName]="userName"></app-chat>
+<app-drawing-area
+  [userId]="userId"
+  [boardId]="boardId"
+  [boardName]="boardName"
+  [userName]="userName"
+  [student]="!showTools"
+  [imagePath]="imagePath"></app-drawing-area>
+<app-chat [userId]="userId" [boardId]="boardId" [userName]="userName" [boardName]="boardName"></app-chat>

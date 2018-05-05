@@ -66,6 +66,9 @@ export class UserProfileComponent implements OnInit {
       this.router.navigate(["/board", this.boardName, val["id"]]);
     });
   }
+  navigateGame() {
+    this.router.navigate(["/game"]);
+  }
   togglePopUpVisibility() {
     this.hidePopUp = !this.hidePopUp;
   }

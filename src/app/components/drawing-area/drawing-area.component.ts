@@ -42,10 +42,14 @@ export class DrawingAreaComponent implements OnInit {
   };
   private otherUserName: string = "";
   private hostName: string = "";
-  @Input() userId: string;
-  @Input() userName: string;
+  private imagePath: string = "";
+  private img: any;
+  @Input('userId') userId: string;
+  @Input('userName') userName: string;
   @Input('boardId') boardId: string;
-  @Input() student: boolean;
+  @Input('student') student: boolean;
+  @Input('imagePath') imagePath: string;
+  @Input('boardName') boardName: string;
 
   @ViewChild("myCanvas") canvas: ElementRef;
   @ViewChild("textInputs") textContainer: ElementRef;
@@ -97,6 +101,7 @@ export class DrawingAreaComponent implements OnInit {
         });
 
         this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        this.loadImage(this.imagePath);
         for (let i = 0; i < this.paths.length; i++) {
           if  (this.paths[i].length === 0 || this.paths[i][0] === undefined) break;
           this.context.lineWidth = this.paths[i][0].radius * 2;
@@ -133,6 +138,7 @@ export class DrawingAreaComponent implements OnInit {
         });
 
         this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        this.loadImage(this.imagePath);
         for (let i = 0; i < this.paths.length; i++) {
           if  (this.paths[i].length === 0 || this.paths[i][0] === undefined) break;
           this.context.lineWidth = this.paths[i][0].radius * 2;
@@ -214,9 +220,16 @@ export class DrawingAreaComponent implements OnInit {
       if (boardName.length === 0) return;
       this.saveImage(boardName);
     });
-    this.shared.imagePath.subscribe((ip: string) => {
-      this.loadImage(ip);
-    });
+    // TODO when get board info from database check if there's an image then call loadImage
+    console.log("imagePath", this.imagePath);
+    if (this.imagePath.length !== 0) {
+      console.log("loading last saved");
+      this.loadImage(this.imagePath);
+    }
+    // this.shared.imagePath.subscribe((ip: string) => {
+    //   this.imagePath = ip;
+    //   this.loadImage(ip);
+    // });
   }
   doResponsive() {
     this.canvas.nativeElement.width = window.innerWidth;
@@ -676,7 +689,7 @@ export class DrawingAreaComponent implements OnInit {
     this.removePencilImage();
 
     this.downloadImage.nativeElement.href = this.canvas.nativeElement.toDataURL();
-    this.downloadImage.nativeElement.download = "true";
+    this.downloadImage.nativeElement.download = this.boardName;
     this.downloadImage.nativeElement.click();
   }
 
@@ -687,21 +700,24 @@ export class DrawingAreaComponent implements OnInit {
       console.log(val + ".." + boardName);
     });
   }
+  public loadImageFirst(imageP) {
+    if (imageP.length === 0) return;
+    //Loading of the home test image - img1
+    this.img = new Image();
 
-  loadImage(imageP) {
+    this.img.setAttribute('crossOrigin', 'anonymous'); // works for me
+    this.img.src = this.hostName + '/public/savedBoards/' + imageP;
+    this.img.onload = () => {
+      //draw background image
+      this.context.drawImage(this.img, 0, 0);
+    };
+  }
+  public loadImage(imageP) {
     if (imageP.length === 0) return;
     console.log("Load Image");
-    //Loading of the home test image - img1
-    let img = new Image();
+    //draw background image
+    this.context.drawImage(this.img, 0, 0);
 
-    img.setAttribute('crossOrigin', 'anonymous'); // works for me
-    //drawing of the test image - img1
-    img.onload = () => {
-      //draw background image
-      this.context.drawImage(img, 0, 0);
-    };
-
-    img.src = this.hostName + '/public/savedBoards/' + imageP;
   }
 
 

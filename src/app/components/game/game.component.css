@@ -1,0 +1,41 @@
+#game
+{
+}
+canvas
+{
+  -webkit-transition: -webkit-transform 1s;
+}
+.clr
+{
+  clear:both;
+}
+.grid-element {
+  margin:3px;
+  float: left;
+  background-color:#7c4b8e;
+// background-color: #553557;
+  border-radius: 1px;
+  width: 225px;
+  height: 225px;
+}
+.grid-element img
+{
+  margin-left: 57px;
+  margin-top: 50px;
+}
+.grid-element:hover {
+//background-color: #A21348;
+  opacity: 0.8;
+  -webkit-transform: rotate(90deg);
+}
+#reload
+{
+  text-decoration: none;
+  font-size: 20px;
+  font-family:"DejaVu Sans";
+  color: darkslateblue;
+}
+#reload:hover
+{
+  font-size: 22px;
+}

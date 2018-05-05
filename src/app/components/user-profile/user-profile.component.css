@@ -28,6 +28,14 @@
   transition: right 0.3s;
 }
 
+.play {
+  width: 60px;
+  position: fixed;
+  right: 20px;
+  bottom: 90px;
+  cursor: pointer;
+}
+
 .add-room {
   width: 60px;
   position: fixed;
